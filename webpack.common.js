@@ -2,16 +2,25 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// Create the shortcut
 const __src = path.resolve(__dirname, 'src');
 
 module.exports = {
-  // Use the shortcut for the entry point
   entry: path.resolve(__src, 'index.js'), 
+  
+  // ADD THIS SECTION BELOW
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+    ],
+  },
   
   plugins: [
     new HtmlWebpackPlugin({
-      // Use the shortcut for the HTML template
       template: path.resolve(__src, 'index.html'), 
     }),
     new CopyWebpackPlugin({
