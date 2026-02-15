@@ -1,5 +1,6 @@
 import { Application, Assets, Sprite, Container, Graphics, Text } from "pixi.js";
 import Board from "./Board/Board";
+import Card from "./Card/Card";
 
 
 (async () => {
@@ -13,6 +14,7 @@ import Board from "./Board/Board";
   const outline = new Graphics();
 
   new Board(outline, board, app)
+  new Card(outline, board, app)
   //   const texture = await Assets.load("https://pixijs.com/assets/bunny.png");
   //   const bunny = new Sprite(texture);
   //   bunny.anchor.set(0.5);
@@ -40,7 +42,7 @@ import Board from "./Board/Board";
 
   // // Draw some shapes to show the canvas renderer in action
   // const colors = [0xe74c3c, 0x3498db, 0x2ecc71, 0xf39c12, 0x9b59b6];
-  // const shapes = [];
+  // const shapes = []; 
   // for (let i = 0; i < 5; i++) {
   //   const shape = new Graphics()
   //     .roundRect(-40, -40, 80, 80, 12)
