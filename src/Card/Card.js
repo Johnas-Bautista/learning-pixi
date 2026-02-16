@@ -6,7 +6,7 @@ export default class Card extends Board {
     super(outline, board, app);
     this.shapes = [];
     this.createCard();
-    this.animateCard(app);
+    // this.animateCard(app);
   }
 
   createCard() {
@@ -25,6 +25,7 @@ export default class Card extends Board {
       for (let col = 0; col < cols; col++) {
         const square = new Graphics()
           .roundRect(-cardSize / 2, -cardSize / 2, cardSize, cardSize)
+          .stroke({width: 4, color: 0x0000ff})
           .fill(0xe74c3c);
         square.x = offsetX + col * step;
         square.y = offsetY + row * step;

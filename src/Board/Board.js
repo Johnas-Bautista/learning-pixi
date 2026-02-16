@@ -3,7 +3,7 @@ export default class Board {
     constructor(outline, board, app){
         this.board = board;
         this.outline = outline
-        this.width = 800;
+        this.width = 500;
         this.height = 500;
         this._init(app);
     }
@@ -23,7 +23,7 @@ export default class Board {
             (app.screen.width - this.width) / 2,
             (app.screen.height - this.height) / 2
         );
-        this.outlineBoard()
+        // this.outlineBoard()
     }
 
     outlineBoard(){
