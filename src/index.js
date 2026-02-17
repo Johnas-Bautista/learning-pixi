@@ -5,11 +5,18 @@ import Card from "./Card/Card";
 
 (async () => {
   const app = new Application();
+  const texture = await Assets.load('/Assets/background.png')
+  const background = new Sprite(texture)
   await app.init({ 
-    background: "#1099bb", 
+    background: 0x1099bb, 
     resizeTo: window 
   });
+  
   document.body.appendChild(app.canvas);
+  background.width = app.screen.width
+  background.height = app.screen.height
+  app.stage.addChild(background)
+
   const board = new Container();
   const outline = new Graphics();
 
