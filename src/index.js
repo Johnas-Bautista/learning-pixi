@@ -9,7 +9,7 @@ import {
 import Board from "./Board/Board";
 import Card from "./Card/Card";
 import MainMenu from "./Menu/MainMenu";
-
+import Manifest from "./Manifest/AssetsManifest"
 (async () => {
   const app = new Application();
   const texture = await Assets.load("/Assets/background.png");
@@ -18,27 +18,30 @@ import MainMenu from "./Menu/MainMenu";
     background: 0x1099bb,
     resizeTo: window,
   });
-
   document.body.appendChild(app.canvas);
   background.width = app.screen.width;
   background.height = app.screen.height;
   app.stage.addChild(background);
 
+  await Assets.init({ manifest: Manifest})
+
   const board = new Container();
   const outline = new Graphics();
-
+  
   const menu = await new MainMenu(app);
-  try {
-    if(menu) {
-      new Board(outline, board, app, 500, 500);
-    } else {
-      console.log("Failed to load menu")
+    try {
+      if(menu) {
+        new Board(outline, board, app, 500, 500);
+      } else {
+        console.log("Failed to load menu")
+      }
+    } catch (error) {
+      console.log(error)
     }
-  } catch (error) {
-    console.log(error)
-  }
 
-  new Card(outline, board, app);
+
+
+  // new Card(outline, board, app);
   //   const texture = await Assets.load("https://pixijs.com/assets/bunny.png");
   //   const bunny = new Sprite(texture);
   //   bunny.anchor.set(0.5);
