@@ -1,10 +1,10 @@
 
 export default class Board {
-    constructor(outline, board, app){
+    constructor(outline, board, app, ...dimension){
         this.board = board;
         this.outline = outline
-        this.width = 500;
-        this.height = 500;
+        this.width = dimension[0];
+        this.height = dimension[1];
         this._init(app);
     }
     
