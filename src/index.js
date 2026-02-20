@@ -34,43 +34,47 @@ const loadingBarMenu = async (app) => {
   const emptyBarTexture = Assets.get("preLoadEmptyBar");
   const filledBarTexture = Assets.get("preLoadFilledBar");
   const texture = await Assets.get("preLoadBackground");
-
+  const container = new Container()
+  const loadingText = new Text({
+    text: "Loading... 0%",
+    style: { fill: "white", fontSize: 36 },
+  });
+  
   const emptyBar = new Sprite(emptyBarTexture);
   const filledBar = new Sprite(filledBarTexture);
   const background = new Sprite(texture);
   background.width = app.screen.width;
   background.height = app.screen.height;
-  filledBar.position.set(765,535)
-  filledBar.anchor.set(0.5)
-  emptyBar.position.set(765,527)
-  emptyBar.anchor.set(0.5)
-  app.stage.addChild(background);
-  app.stage.addChild(emptyBar);
-  app.stage.addChild(filledBar);
+  loadingText.anchor.set(.5)
+  loadingText.position.set(app.screen.width / 2, (app.screen.height / 2) + 100)
+  filledBar.position.set(
+    app.screen.width / 2 - filledBar.width / 2,
+    (app.screen.height / 2 + emptyBar.width / 4) + 20,
+  );
+  emptyBar.position.set(
+    app.screen.width / 2 - emptyBar.width / 2,
+    app.screen.height / 2 + emptyBar.width / 4,
+  );
+  app.stage.addChild(background, emptyBar, filledBar, loadingText);
 
   // loadAsset(app);
 };
-async function loadAsset(app, texture) {
-  // const board = new Container();
-  // const outline = new Graphics();
-  // const menu = await new MainMenu(app);
-  //     try {
-  //     if(menu) {
-  //         new Board(outline, board, app, 50  0, 500);
-  //     } else {
-  //         console.log("Failed to load menu")
-  //     }
-  //     } catch (error) {
-  //         console.log(error)
-  //     }
-}
+// async function loadAsset(app, texture) {
+//   const board = new Container();
+//   const outline = new Graphics();
+//   const menu = await new MainMenu(app);
+//       try {
+//       if(menu) {
+//           new Board(outline, board, app, 50  0, 500);
+//       } else {
+//           console.log("Failed to load menu")
+//       }
+//       } catch (error) {
+//           console.log(error)
+//       }
+// }
 
 const onProgress = (progress) => {
-  const loadingText = new Text({
-    text: "Loading... 0%",
-    style: { fill: "white", fontSize: 36 },
-  });
-
   loadingText.text = `Loading... ${Math.round(progress * 100)}%`;
   // You could also update a loading bar's width here
 };
