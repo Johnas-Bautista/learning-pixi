@@ -1,23 +1,19 @@
-import {
-  Application,
-  Assets,
-  Sprite,
-  Container,
-  Graphics,
-  Text,
-} from "pixi.js";
+import {Application, Assets, Sprite, Container, Graphics, Text} from "pixi.js";
 import Board from "./Board/Board";
 import Card from "./Card/Card";
 import MainMenu from "./Menu/MainMenu";
 import Manifest from "./Manifest/AssetsManifest";
 import { initDevtools } from "@pixi/devtools";
 import Signals from "./Signals/GameSignals";
+import NewGame from "./common";
+
+const app = new Application();
 
 (async () => {
   try {
     const GAME_WIDTH = window.innerWidth;
     const GAME_HEIGHT = window.innerHeight;
-    const app = new Application();
+    
     await Assets.init({ manifest: Manifest });
     await app.init({
       background: 0x1099bb,
@@ -26,7 +22,7 @@ import Signals from "./Signals/GameSignals";
       resizeTo: window,
     });
 
-    // Signals.clickToStart.add(new MainMenu());
+    Signals.clickToStart.add(() => new MainMenu(app));
 
     initDevtools({ app });
     document.body.appendChild(app.canvas);
@@ -51,7 +47,6 @@ const loadingBarMenu = async (app) => {
   });
 
   setProperties(app, emptyBar, filledBar, background, loadingText);
-  // loadAsset(app);
 };
 
 function setProperties(app, emptyBar, filledBar, background, loadingText) {
@@ -92,7 +87,10 @@ const onProgress = async (app, loadingBar, textLoad) => {
     targetProgress = progress; // The ticker will now see this new value
     let percent = Math.round(progress * 100);
     textLoad.text = `Loading... ${percent}%`;
+    
+    // NewGame(app, loadingBar, textLoad);
   });
   // loadingBar.scale.x = 1;
   app.ticker.remove(updateLoadingBar);
+  
 };
