@@ -11,70 +11,88 @@ import Card from "./Card/Card";
 import MainMenu from "./Menu/MainMenu";
 import Manifest from "./Manifest/AssetsManifest";
 import { initDevtools } from "@pixi/devtools";
+import Signals from "./Signals/GameSignals";
 
 (async () => {
-  const GAME_WIDTH = window.innerWidth;
-  const GAME_HEIGHT = window.innerHeight;
-  const app = new Application();
-  await Assets.init({ manifest: Manifest });
-  await app.init({
-    background: 0x1099bb,
-    width: GAME_WIDTH,
-    height: GAME_HEIGHT,
-    resizeTo: window,
-  });
+  try {
+    const GAME_WIDTH = window.innerWidth;
+    const GAME_HEIGHT = window.innerHeight;
+    const app = new Application();
+    await Assets.init({ manifest: Manifest });
+    await app.init({
+      background: 0x1099bb,
+      width: GAME_WIDTH,
+      height: GAME_HEIGHT,
+      resizeTo: window,
+    });
 
-  initDevtools({ app });
-  document.body.appendChild(app.canvas);
-  loadingBarMenu(app);
+    // Signals.clickToStart.add(new MainMenu());
+
+    initDevtools({ app });
+    document.body.appendChild(app.canvas);
+    loadingBarMenu(app);
+  } catch (error) {
+    app.stage.addChild(new Text("Error loading assets", {
+      fill: "red",
+      fontSize: 36,
+    }));
+    console.error("Error loading assets:", error);
+  }
 })();
 
 const loadingBarMenu = async (app) => {
-  await Assets.loadBundle("loading-screen");
-  const emptyBarTexture = Assets.get("preLoadEmptyBar");
-  const filledBarTexture = Assets.get("preLoadFilledBar");
-  const texture = await Assets.get("preLoadBackground");
-  const container = new Container()
+  const loadingAsset = await Assets.loadBundle("loading-screen");
+  const emptyBar = Sprite.from("preLoadEmptyBar");
+  const filledBar = Sprite.from("preLoadFilledBar");
+  const background = Sprite.from("preLoadBackground");
   const loadingText = new Text({
     text: "Loading... 0%",
     style: { fill: "white", fontSize: 36 },
   });
-  
-  const emptyBar = new Sprite(emptyBarTexture);
-  const filledBar = new Sprite(filledBarTexture);
-  const background = new Sprite(texture);
+
+  setProperties(app, emptyBar, filledBar, background, loadingText);
+  // loadAsset(app);
+};
+
+function setProperties(app, emptyBar, filledBar, background, loadingText) {
   background.width = app.screen.width;
   background.height = app.screen.height;
-  loadingText.anchor.set(.5)
-  loadingText.position.set(app.screen.width / 2, (app.screen.height / 2) + 100)
+  loadingText.anchor.set(0.5);
+  loadingText.position.set(app.screen.width / 2, app.screen.height / 2 + 100);
   filledBar.position.set(
     app.screen.width / 2 - filledBar.width / 2,
-    (app.screen.height / 2 + emptyBar.width / 4) + 20,
+    app.screen.height / 2 + emptyBar.width / 4 + 20,
   );
   emptyBar.position.set(
     app.screen.width / 2 - emptyBar.width / 2,
     app.screen.height / 2 + emptyBar.width / 4,
   );
   app.stage.addChild(background, emptyBar, filledBar, loadingText);
+  onProgress(app, filledBar, loadingText);
+}
 
-  // loadAsset(app);
-};
-// async function loadAsset(app, texture) {
-//   const board = new Container();
-//   const outline = new Graphics();
-//   const menu = await new MainMenu(app);
-//       try {
-//       if(menu) {
-//           new Board(outline, board, app, 50  0, 500);
-//       } else {
-//           console.log("Failed to load menu")
-//       }
-//       } catch (error) {
-//           console.log(error)
-//       }
-// }
+const onProgress = async (app, loadingBar, textLoad) => {
+  let targetProgress = 0;
 
-const onProgress = (progress) => {
-  loadingText.text = `Loading... ${Math.round(progress * 100)}%`;
-  // You could also update a loading bar's width here
+  // 1. Add the ticker FIRST so it can listen for targetProgress changes
+  const updateLoadingBar = () => {
+    if (loadingBar.scale.x < targetProgress) {
+      loadingBar.scale.x += 0.001;
+
+      // Prevent overshooting if the jump is small
+      if (loadingBar.scale.x > targetProgress) {
+        loadingBar.scale.x = targetProgress;
+      }
+    }
+  };
+  app.ticker.add(updateLoadingBar);
+
+  // 2. Start the load (the await happens while the ticker is running)
+  await Assets.loadBundle("menu-assets", (progress) => {
+    targetProgress = progress; // The ticker will now see this new value
+    let percent = Math.round(progress * 100);
+    textLoad.text = `Loading... ${percent}%`;
+  });
+  // loadingBar.scale.x = 1;
+  app.ticker.remove(updateLoadingBar);
 };

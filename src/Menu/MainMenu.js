@@ -8,13 +8,9 @@ export default class MainMenu {
     }
 
     async init(){
-        const texture = await Assets.load("/Assets/main.png")
-        const btns = await Assets.load("/Assets/menu_btn.png")
-        console.log(texture)
-        console.log(btns)
-        
-        const menu = new Sprite(texture);
-        const menu_btns = new Sprite(btns);
+        const menu = Sprite.from("preLoadMainMenu");
+        const menu_btns = Sprite.from("preLoadMenuButtons");
+
         const screen = [this.app.screen.width / 2, this.app.screen.height / 2]
         menu_btns.scale = .80
         menu_btns.anchor.set(.50, .15)
