@@ -2,7 +2,8 @@ import * as signals from "signals";
 
 export default {
     clickToStart: new signals(),
-    StartButton: new signals(),
-    continueBtn: new signals(),
+    startButton: new signals(),
+    settingsButton: new signals(),
+    exitButton: new signals(),
     retryBtn: new signals()
 }

@@ -4,13 +4,10 @@ import Signals from "./Signals/GameSignals";
 export default (app, filledBar, text, emptyBar) => {
   const overlay = new Container();
   app.stage.addChild(overlay);
-
   text.text = "CLICK TO START";
   text.anchor.set(0.5);
-  // Position it in the center of the screen
   text.x = app.screen.width / 2;
   text.y = app.screen.height / 2 + 100;
-
   overlay.addChild(text);
 
   // --- PULSE ANIMATION ---
@@ -29,11 +26,17 @@ export default (app, filledBar, text, emptyBar) => {
   overlay.hitArea = new Rectangle(0, 0, app.screen.width, app.screen.height);
   overlay.cursor = "pointer";
 
-  overlay.once("pointerdown", () => {
-    // Clean up the animation ticker before destroying
-    app.ticker.remove(pulse);
-    app.stage.removeChild(filledBar, emptyBar, overlay);
+  overlay.once("pointerdown", (event) => {
+    if (event.button === 0) {
+      // Clean up the animation ticker before destroying
+      app.ticker.remove(pulse);
+      [filledBar, emptyBar, overlay].forEach((obj) => {
+        if (obj && !obj.destroyed) {
+          obj.destroy({ children: true });
+        }
+      });
 
-    Signals.clickToStart.dispatch();
+      Signals.clickToStart.dispatch();
+    }
   });
 };

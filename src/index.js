@@ -88,7 +88,7 @@ function setProperties(app, emptyBar, filledBar, background, loadingText) {
   filledBar.scale.x = 0;
 
   app.stage.addChild(background, emptyBar, filledBar, loadingText);
-  onProgress(app, filledBar, loadingText);
+  onProgress(app, filledBar, loadingText, emptyBar);
 }
 
 const onProgress = async (app, filledBar, textLoad, emptyBar) => {
