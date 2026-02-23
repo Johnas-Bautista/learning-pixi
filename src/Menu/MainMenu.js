@@ -1,39 +1,68 @@
-import { Assets, Sprite, textStyleToCSS } from "pixi.js"
-import Signals from "../Signals/GameSignals"
+import { Assets, Sprite, textStyleToCSS, Rectangle, Container } from "pixi.js";
+import Signals from "../Signals/GameSignals";
+import GameSelect from "./GameSelect";
 
 export default class MainMenu {
-    constructor(app){
-        this.app = app
-        this.menu_btns = " "
-        this.init()
-    }
+  constructor(app) {
+    this.app = app;
+    this.menu = Sprite.from("preLoadMainMenu");
+    this.menu_btns = new Container();
+    this.startBtn = " ";
+    this.settingsBtn = " ";
+    this.exitBtn = " ";
+    Signals.startButton.add(this.clickStartButton, this);
+    Signals.settingsButton.add(this.clickSettingsButton, this);
+    Signals.exitButton.add(this.clickExitButton, this);
+    this._init();
+  }
 
-    async init(){
-        const menu = Sprite.from("preLoadMainMenu");
-        this.menu_btns = Sprite.from("preLoadMenuButtons");
-        Signals.startButton.add(this.clickStartButton, this)
-        Signals.settingsButton.add(this.clickSettingsButton, this)
-        Signals.exitButton.add(this.clickExitButton, this)
-        const screen = [this.app.screen.width / 2, this.app.screen.height / 2]
-        this.menu_btns.scale = .80
-        this.menu_btns.anchor.set(.50, .15)
-        menu.anchor.set(.50, .85)
-        this.menu_btns.position.set(screen[0], screen[1])
-        menu.position.set(screen[0], screen[1])
-        this.app.stage.addChild(menu, this.menu_btns)
-    }
+  async _init() {
+    const screen = [this.app.screen.width / 2, this.app.screen.height / 2];
 
-    clickStartButton(){
-        this.menu_btns.eventMode = 'static'
-    }
+    this.menu.anchor.set(0.5, 0.85);
+    this.menu.position.set(screen[0], screen[1]);
 
-    clickSettingsButton(){
+    this.startBtn = Sprite.from("preLoadStartButton");
+    this.settingsBtn = Sprite.from("preLoadSettingsButton");
+    this.exitBtn = Sprite.from("preLoadExitButton");
 
-    }
+    this.startBtn.position.set(0, 0);
+    this.settingsBtn.position.set(0, 125);
+    this.exitBtn.position.set(0, 250);
 
-    clickExitButton(){
+    this.menu_btns.addChild(this.startBtn, this.settingsBtn, this.exitBtn);
+    this.menu_btns.pivot.set(this.menu_btns.width / 2, -30);
+    this.menu_btns.scale = 0.75;
+    this.menu_btns.position.set(screen[0], screen[1]);
 
-    }
+    this.app.stage.addChild(this.menu, this.menu_btns);
 
+    this.startBtn.eventMode = "static";
+    this.startBtn.cursor = "pointer";
+    this.startBtn.on("pointerover", () => (this.startBtn.tint = 0xdddddd));
+    this.startBtn.on("pointerout", () => (this.startBtn.tint = 0xffffff));
+    this.startBtn.on("pointerdown", () => {
+      Signals.clickToStart.dispatch();
+    });
 
+    this.settingsBtn.eventMode = "static";
+    this.settingsBtn.cursor = "pointer";
+    this.settingsBtn.on("pointerover",() => (this.settingsBtn.tint = 0xdddddd),);
+    this.settingsBtn.on("pointerout", () => (this.settingsBtn.tint = 0xffffff));
+
+    this.exitBtn.eventMode = "static";
+    this.exitBtn.cursor = "pointer";
+    this.exitBtn.on("pointerover", () => (this.exitBtn.tint = 0xdddddd));
+    this.exitBtn.on("pointerout", () => (this.exitBtn.tint = 0xffffff));
+  }
+
+  clickStartButton() {
+    const select = new GameSelect();
+    Signals.goBackBtn.add(() => select.goBack());
+    this.app.stage.removeChild(this.menu_btns);
+  }
+
+  clickSettingsButton() {}
+
+  clickExitButton() {}
 }

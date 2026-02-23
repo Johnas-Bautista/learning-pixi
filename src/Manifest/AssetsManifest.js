@@ -3,7 +3,9 @@ export default {
     {
       name: "menu-assets",
       assets: [
-        { alias: "preLoadMenuButtons", src: "/Assets/menu_btn.png" },
+        { alias: "preLoadStartButton", src: "/Assets/playBtn.png" },
+        { alias: "preLoadSettingsButton", src: "/Assets/settingsBtn.png" },
+        { alias: "preLoadExitButton", src: "/Assets/exitBtn.png" },
         { alias: "preLoadMainMenu", src: "/Assets/main.png" },
       ],
     },
