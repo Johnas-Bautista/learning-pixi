@@ -42,7 +42,8 @@ export default class MainMenu {
     this.startBtn.on("pointerover", () => (this.startBtn.tint = 0xdddddd));
     this.startBtn.on("pointerout", () => (this.startBtn.tint = 0xffffff));
     this.startBtn.on("pointerdown", () => {
-      Signals.clickToStart.dispatch();
+
+      Signals.startButton.dispatch(console.log("dispatched"));
     });
 
     this.settingsBtn.eventMode = "static";
@@ -59,7 +60,7 @@ export default class MainMenu {
   clickStartButton() {
     const select = new GameSelect();
     Signals.goBackBtn.add(() => select.goBack());
-    this.app.stage.removeChild(this.menu_btns);
+    this.app.stage.removeChild(this.menu_btns, this.menu);
   }
 
   clickSettingsButton() {}

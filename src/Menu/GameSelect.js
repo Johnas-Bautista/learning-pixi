@@ -1,13 +1,13 @@
 export default class GameSelect {
     constructor(){
-        _init();
+       this._init();
     }
 
     _init(){
-
+        console.log("Game Select")
     }
 
     goBack(){
-        
+
     }
 }
