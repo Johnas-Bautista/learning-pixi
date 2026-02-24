@@ -5,6 +5,7 @@ module.exports = merge(common, {
   mode: "development",
   devtool: "inline-source-map", // Helps you find errors in your original code
   devServer: {
+    host: "0.0.0.0",
     static: "./dist",
     hot: true,
     port: 8080,
@@ -14,7 +15,7 @@ module.exports = merge(common, {
       Pragma: "no-cache",
     },
     client: {
-      overlay: true, // Shows errors directly on the screen
+      overlay: true, // Shows errors   directly on the screen
     },
   },
 });

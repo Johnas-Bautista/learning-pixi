@@ -7,21 +7,29 @@ export default class GameSelect {
         this.app = app;
         this.menu = menu
         this.goBack = Sprite.from('preLoadGoBackButton')
-        this.select = new Graphics()
+        this.square = new Graphics()
         this.container = new Container()
         this._init();
     }
 
     _init(){
         console.log("Game Select")
+        const optionSize = 300
+        const screen = [this.app.screen.width / 2 , this.app.screen.height / 2]
+
+        const option1 = this.square.roundRect(-optionSize / 2 -optionSize, -optionSize, optionSize, optionSize, 15).fill('blue')
+        const option2 = this.square.roundRect(-optionSize / 2 + (optionSize * 2) / 2, -optionSize, optionSize, optionSize, 15).fill('blue')
         
-        // this.select.roundRect(50, 50, 500, 500, 15).fill('blue')
-        this.container.addChild(this.goBack, this.select)
+        this.container.addChild(this.goBack, option1, option2)
         this.app.stage.addChild(this.container)
-        this.goBack.position.set(this.app.stage.width / 2 , this.app.stage.height / 2)
-        this.container.width = this.app.stage.width
-        this.container.height = this.app.stage.height
-        this.goBack.scale.set(0.1)
+        // this.container.width = this.app.stage.width
+        // this.container.height = this.app.stage.height
+        option1.position.set(screen[0], screen[1])
+        
+        option2.position.set(screen[0], screen[1])
+        this.goBack.anchor.set(0.5, -2)
+        this.goBack.scale.set(.5)
+        this.goBack.position.set(screen[0], screen[1])
         this.goBack.eventMode = 'static'
         this.goBack.cursor = 'pointer'
         this.goBack.on('pointerdown', ()=>{
