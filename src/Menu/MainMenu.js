@@ -1,6 +1,7 @@
 import { Assets, Sprite, textStyleToCSS, Rectangle, Container } from "pixi.js";
 import Signals from "../Signals/GameSignals";
 import GameSelect from "./GameSelect";
+import GameSettings from "./GameSettings";
 
 export default class MainMenu {
   constructor(app) {
@@ -13,10 +14,10 @@ export default class MainMenu {
     Signals.startButton.add(this.clickStartButton, this);
     Signals.settingsButton.add(this.clickSettingsButton, this);
     Signals.exitButton.add(this.clickExitButton, this);
-    this._init();
+    this.init();
   }
 
-  async _init() {
+  async init() {
     const screen = [this.app.screen.width / 2, this.app.screen.height / 2];
 
     this.menu.anchor.set(0.5, 0.85);
@@ -42,13 +43,15 @@ export default class MainMenu {
     this.startBtn.on("pointerover", () => (this.startBtn.tint = 0xdddddd));
     this.startBtn.on("pointerout", () => (this.startBtn.tint = 0xffffff));
     this.startBtn.on("pointerdown", () => {
-
       Signals.startButton.dispatch(console.log("dispatched"));
     });
 
     this.settingsBtn.eventMode = "static";
     this.settingsBtn.cursor = "pointer";
-    this.settingsBtn.on("pointerover",() => (this.settingsBtn.tint = 0xdddddd),);
+    this.settingsBtn.on(
+      "pointerover",
+      () => (this.settingsBtn.tint = 0xdddddd),
+    );
     this.settingsBtn.on("pointerout", () => (this.settingsBtn.tint = 0xffffff));
 
     this.exitBtn.eventMode = "static";
@@ -58,12 +61,20 @@ export default class MainMenu {
   }
 
   clickStartButton() {
-    const select = new GameSelect();
-    Signals.goBackBtn.add(() => select.goBack());
-    this.app.stage.removeChild(this.menu_btns, this.menu);
+    const select = new GameSelect(this.app, this);
+    // Fix 1: Remove them from the stage instead of destroying them
+    this.app.stage.removeChild(this.menu, this.menu_btns);
+    
+    // Fix 2: Prevent a memory leak by clearing old listeners before adding a new one
+    Signals.goBackBtn.removeAll();
+    Signals.goBackBtn.add(() => select.goBackButton());
   }
 
-  clickSettingsButton() {}
+  clickSettingsButton() {
+    const settings = new GameSettings()
+    Signals.goBackBtn.removeAll();
+    Signals.goBackBtn.add(() => settings.goBackButton());
+  }
 
   clickExitButton() {}
 }

@@ -2,7 +2,6 @@ import {
   Application,
   Assets,
   Sprite,
-  Container,
   Graphics,
   Text,
   TextStyle,
@@ -47,7 +46,7 @@ const app = new Application();
 })();
 
 const loadingBarMenu = async (app) => {
-  const loadingAsset = await Assets.loadBundle("loading-screen");
+  const loadingAsset = await Assets.loadBundle("loading-screen-assets");
 
   const background = Sprite.from("preLoadBackground");
   const emptyBar = Sprite.from("preLoadEmptyBar");
