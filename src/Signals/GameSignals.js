@@ -6,5 +6,6 @@ export default {
     settingsButton: new signals(),
     exitButton: new signals(),
     retryBtn: new signals(),
-    goBackBtn: new signals()
+    goBackBtn: new signals(),
+    optionBtn: new signals()
 }

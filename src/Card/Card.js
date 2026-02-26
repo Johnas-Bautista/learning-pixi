@@ -2,8 +2,8 @@ import Board from "../Board/Board";
 import { Graphics } from "pixi.js";
 
 export default class Card extends Board {
-  constructor(outline, board, app) {
-    super(outline, board, app);
+  constructor(outline, board, app, ...dimension) {
+    super(outline, board, app, ...dimension);
     this.shapes = [];
     this.createCard();
     // this.animateCard(app);

@@ -1,13 +1,16 @@
 import { Container, Graphics, Sprite} from "pixi.js";
 import MainMenu from "./MainMenu";
 import Signals from "../Signals/GameSignals";
+import Card from "../Card/Card";
 
 export default class GameSelect {
     constructor(app, menu){
         this.app = app;
         this.menu = menu
         this.goBack = Sprite.from('preLoadGoBackButton')
-        this.square = new Graphics()
+        Signals.optionBtn.add(this.chooseLevel, this)
+        this.option1 = new Graphics()
+        this.option2 = new Graphics()
         this.container = new Container()
         this._init();
     }
@@ -15,27 +18,47 @@ export default class GameSelect {
     _init(){
         console.log("Game Select")
         const optionSize = 300
-        const screen = [this.app.screen.width / 2 , this.app.screen.height / 2]
+        const screenX = this.app.screen.width / 2;
+        const screenY = this.app.screen.height / 2;
 
-        const option1 = this.square.roundRect(-optionSize / 2 -optionSize, -optionSize, optionSize, optionSize, 15).fill('blue')
-        const option2 = this.square.roundRect(-optionSize / 2 + (optionSize * 2) / 2, -optionSize, optionSize, optionSize, 15).fill('blue')
+        // 1. DRAW CENTERED: We draw the box perfectly around 0,0 
+        // (-150, -150, 300, 300)
+        this.option1.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
+        this.option2.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
         
-        this.container.addChild(this.goBack, option1, option2)
-        this.app.stage.addChild(this.container)
-        // this.container.width = this.app.stage.width
-        // this.container.height = this.app.stage.height
-        option1.position.set(screen[0], screen[1])
         
-        option2.position.set(screen[0], screen[1])
-        this.goBack.anchor.set(0.5, -2)
-        this.goBack.scale.set(.5)
-        this.goBack.position.set(screen[0], screen[1])
-        this.goBack.eventMode = 'static'
-        this.goBack.cursor = 'pointer'
-        this.goBack.on('pointerdown', ()=>{
-            Signals.goBackBtn.dispatch(console.log("went back"))
+        this.option1.eventMode = this.option2.eventMode = 'static'
+        this.option1.cursor = this.option2.cursor = 'pointer'
+        
+        this.pulsingAnimation(this.option1)
+        this.pulsingAnimation(this.option2)
+
+        this.option1.on("pointerdown", () =>{
+            Signals.optionBtn.dispatch()
         })
-        // this.goBack.anchor.set(1)
+        
+        this.container.addChild(this.goBack, this.option1, this.option2)
+        this.app.stage.addChild(this.container)
+        
+        // 2. POSITION OFFSETS: Now we apply your original layout math directly to the positions!
+        // We take the center of the screen, and add/subtract the layout offsets.
+        const layoutOffsetY = -optionSize / 1.3 + (optionSize / 2); // Your original Y offset adjusted for the new center
+
+        this.option1.position.set(screenX - (optionSize / 1.3), screenY + layoutOffsetY);
+        this.option2.position.set(screenX + (optionSize / 1.3), screenY + layoutOffsetY);
+        
+        
+
+
+        this.goBack.anchor.set(0.5, 2.5); 
+        this.goBack.scale.set(.5);
+        this.goBack.position.set(screenX, screenY + optionSize); 
+        this.goBack.eventMode = 'static';
+        this.goBack.cursor = 'pointer';
+        
+        this.goBack.on('pointerdown', ()=>{
+            Signals.goBackBtn.dispatch();
+        });
     }
 
     goBackButton(){
@@ -44,7 +67,38 @@ export default class GameSelect {
         console.log("went back 2");
     }
 
-    chooseLevel(){
+    
+    pulsingAnimation(options){
+        let elapsed = 0
+        const pulseTicker = (ticker) => {
+            elapsed += ticker.deltaTime;
+            // Math.sin creates a smooth wave between -1 and 1
+            // We scale it down so the text only grows by 10% (1.0 to 1.1)
+            const scale = 1 + Math.sin(elapsed * 0.1) * 0.05;
+            options.scale.set(scale);
+        }
 
+        options.on("pointerover", ()=>{
+            this.app.ticker.add(pulseTicker)
+        });
+        options.on("pointerout", ()=>{
+            this.app.ticker.remove(pulseTicker)
+            options.scale.set(1)
+            elapsed = 0;
+        });
     }
+    
+    chooseLevel(options){
+        console.log("Level Selected")
+        try {
+            const board = new Container()
+            const outline = new Graphics()
+            new Card(outline, board, this.app, 500, 500)
+
+            console.log("Board successfully created and added to stage!");
+        } catch(error){
+            console.error("The code crashed while making the board:", error);
+        }
+    }
+    
 }

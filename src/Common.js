@@ -28,7 +28,6 @@ export default (app, filledBar, text, emptyBar) => {
 
   overlay.once("pointerdown", (event) => {
     if (event.button === 0) {
-      // Clean up the animation ticker before destroying
       app.ticker.remove(pulse);
       [filledBar, emptyBar, overlay].forEach((obj) => {
         if (obj && !obj.destroyed) {
