@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pixi/sound": "^6.0.1",
     "pixi.js": "^8.16.0",
     "signals": "^1.0.0"
   },

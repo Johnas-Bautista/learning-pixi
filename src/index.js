@@ -14,6 +14,7 @@ import { initDevtools } from "@pixi/devtools";
 import Signals from "./Signals/GameSignals";
 import NewGame from "./common";
 
+
 const app = new Application();
 
 (async () => {
@@ -111,9 +112,9 @@ const onProgress = async (app, filledBar, textLoad, emptyBar) => {
 
   app.ticker.add(updateLoadingBar);
   
-  await Assets.loadBundle("menu-assets", (progress) => {
+  await Assets.loadBundle(["menu-assets", "ingame-assets"], (progress) => {
     targetProgress = progress;
-    textLoad.text = `Loading... ${progress * 100}%`;
+    textLoad.text = `Loading... ${Math.round(progress * 100)}%`;
   });
 
 };

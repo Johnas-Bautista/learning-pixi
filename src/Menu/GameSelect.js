@@ -94,7 +94,7 @@ export default class GameSelect {
             const board = new Container()
             const outline = new Graphics()
             new Card(outline, board, this.app, 500, 500)
-
+            this.app.stage.removeChild(this.container)
             console.log("Board successfully created and added to stage!");
         } catch(error){
             console.error("The code crashed while making the board:", error);

@@ -1,10 +1,12 @@
 import Board from "../Board/Board";
 import { Graphics } from "pixi.js";
+import { sound } from '@pixi/sound';
 
 export default class Card extends Board {
   constructor(outline, board, app, ...dimension) {
     super(outline, board, app, ...dimension);
     this.shapes = [];
+    this.activeCards = [];
     this.createCard();
     // this.animateCard(app);
   }
@@ -13,7 +15,7 @@ export default class Card extends Board {
     const cardSize = 100;
     const padding = 10;
     const step = cardSize + padding; // 110px per card
-
+  
     const cols = Math.floor(this.width / step);   // how many fit horizontally
     const rows = Math.floor(this.height / step);   // how many fit vertically
 
