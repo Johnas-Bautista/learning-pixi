@@ -16,7 +16,9 @@ export default {
       assets: [
         {alias: "preLoadFilledBar", src: "/Assets/progressTop.png"},
         {alias: "preLoadEmptyBar", src: "/Assets/progressBack.png"},
-        {alias: "preLoadBackground", src: "/Assets/background.png"}
+        {alias: "preLoadBackground", src: "/Assets/background.png"},
+        {alias: "mainBgm", src: "/Assets/sfx/thick-of-it.mp3"},
+        {alias: "buttonClicked", src: "/Assets/sfx/buttonClick.mp3"}
       ]
     },
     {
@@ -24,13 +26,22 @@ export default {
       assets: [ 
         { alias: "fahMeme", src: "/Assets/Memes/Ash_baby.webp" },
         { alias: "emotionalDamageMeme", src: "/Assets/Memes/emotionalDamage.jpg" },
+        { alias: "homelessMeme", src: "/Assets/Memes/homelessMeme.gif"},
+        { alias: "sadHamsterMeme", src: "/Assets/Memes/sadHamster.gif"},
+        { alias: "traleroTralalaMeme", src: "/Assets/Memes/tralaleroTralala.jpg"},
+        { alias: "huhCatMeme", src: "/Assets/Memes/huhCat.png"},
+        { alias: "StopItMeme", src: "/Assets/Memes/stopItGetSomeHelp.gif"},
       ]
     },
     {
       name: "ingame-sfx",
       assets: [
           { alias: "fahSfx", src: "/Assets/sfx/fah.mp3" },
-          { alias: "emotionalDamageSfx", src: "/Assets/sfx/emotionalDamage.mp3" }
+          { alias: "emotionalDamageSfx", src: "/Assets/sfx/emotionalDamage.mp3" },
+          { alias: "homelessSfx", src: "/Assets/sfx/homeLess.mp3" },
+          { alias: "sadHamsterSfx", src: "/Assets/sfx/sadViolin.mp3" },
+          { alias: "tralaleroTralalaSfx", src: "/Assets/sfx/traleroTralala.mp3" },
+          { alias: "huhCatSfx", src: "/Assets/sfx/huhCat.mp3" },
       ]
     }
   ],
