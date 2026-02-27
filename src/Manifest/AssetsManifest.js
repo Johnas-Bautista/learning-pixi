@@ -23,10 +23,15 @@ export default {
       name: "ingame-assets",
       assets: [ 
         { alias: "fahMeme", src: "/Assets/Memes/Ash_baby.webp" },
-        { alias: "fahSfx", src: "/Assets/sfx/fah.mp3" },
         { alias: "emotionalDamageMeme", src: "/Assets/Memes/emotionalDamage.jpg" },
-        { alias: "emotionalDamageSfx", src: "/Assets/sfx/emotionalDamage.mp3" }
       ]
     },
+    {
+      name: "ingame-sfx",
+      assets: [
+          { alias: "fahSfx", src: "/Assets/sfx/fah.mp3" },
+          { alias: "emotionalDamageSfx", src: "/Assets/sfx/emotionalDamage.mp3" }
+      ]
+    }
   ],
 };

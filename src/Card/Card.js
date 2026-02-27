@@ -1,10 +1,14 @@
 import Board from "../Board/Board";
-import { Graphics } from "pixi.js";
+import { Graphics, Texture, Assets } from "pixi.js";
 import { sound } from '@pixi/sound';
-
+import {bundleAssets} from '../index.js'
+import manifest from '../Manifest/AssetsManifest.js'
+  
 export default class Card extends Board {
   constructor(outline, board, app, ...dimension) {
     super(outline, board, app, ...dimension);
+    this.cardSize = 100;
+    this.padding = 10;
     this.shapes = [];
     this.activeCards = [];
     this.createCard();
@@ -12,37 +16,81 @@ export default class Card extends Board {
   }
 
   createCard() {
-    const cardSize = 100;
-    const padding = 10;
-    const step = cardSize + padding; // 110px per card
+    const step = this.cardSize + this.padding; // 110px per card
   
     const cols = Math.floor(this.width / step);   // how many fit horizontally
     const rows = Math.floor(this.height / step);   // how many fit vertically
+    const totalCards = cols * rows;
+    
+    const ingameBundle = manifest.bundles.find(bundle => bundle.name === "ingame-assets");
+
+    const imagesAliases = ingameBundle.assets.map(assets => assets.alias);
+
+    let cardPairs = [];
+    for(let i = 0; i < totalCards / 2; i++) {
+      const color = imagesAliases[i % imagesAliases.length]
+      cardPairs.push(color, color)
+    }
+    
+    // console.log(cardPairs[0])
+    cardPairs.sort(() => Math.random() - 0.5);
 
     // center the grid within the board
-    const offsetX = (this.width - cols * step + padding) / 2 + cardSize / 2;
-    const offsetY = (this.height - rows * step + padding) / 2 + cardSize / 2;
+    const offsetX = (this.width - cols * step + this.padding) / 2 + this.cardSize / 2;
+    const offsetY = (this.height - rows * step + this.padding) / 2 + this.cardSize / 2;
+
+    let cardIndex = 0;
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         const square = new Graphics()
-          .roundRect(-cardSize / 2, -cardSize / 2, cardSize, cardSize)
-          .stroke({width: 4, color: 0x0000ff})
-          .fill(0xe74c3c);
+        this.faceCardDown(square, this.cardSize)
+
         square.x = offsetX + col * step;
         square.y = offsetY + row * step;
+
+        square.cardValue = cardPairs[cardIndex];
+        square.isFlipped = false;
+
+        square.eventMode = 'static';
+        square.cursor = 'pointer';
+        square.on('pointerover', () => square.tint = 0xdddddd);
+        square.on('pointerout', () => square.tint = 'white');
+        
+        square.on('pointerdown', () => {this.handleClick(square)});
         this.shapes.push(square);
         this.board.addChild(square);
+
+        cardIndex++;
       }
     }
   }
-  animateCard(app) {
-    let time = 0;
-    app.ticker.add((ticker) => {
-    time += ticker.deltaTime * 0.02;
-      for (let i = 0; i < this.shapes.length; i++) {
-        this.shapes[i].rotation += .02 * ticker.deltaTime;
-      }
-    });
+
+  faceCardDown(card){
+    card.clear();
+    card.roundRect(-this.cardSize / 2, -this.cardSize / 2, this.cardSize, this.cardSize)
+          .stroke({width: 4, color: 0x0000ff})
+          .fill({ color: 'white', alpha: 0.5 });
   }
+
+  faceCardUp(card, color){
+    const texture = Assets.get(color)
+    card.clear()
+    card.roundRect(-this.cardSize / 2, -this.cardSize / 2, this.cardSize, this.cardSize)
+          .stroke({width: 4, color: 0x0000ff})
+          .fill({ texture: texture});
+  }
+
+  handleClick(cardClick){
+      this.faceCardUp(cardClick, cardClick.cardValue)
+  }
+  // animateCard(app) {
+  //   let time = 0;
+  //   app.ticker.add((ticker) => {
+  //   time += ticker.deltaTime * 0.02;
+  //     for (let i = 0; i < this.shapes.length; i++) {
+  //       this.shapes[i].rotation += .02 * ticker.deltaTime;
+  //     }
+  //   });
+  // }
 }
