@@ -23,15 +23,22 @@ export default class Card extends Board {
     const totalCards = cols * rows;
 
     const ingameBundle = manifest.bundles.find(
-      (bundle) => bundle.name === "ingame-assets",
+      (b) => b.name === "ingame-assets",
     );
+    const sfxBundle = manifest.bundles.find((b) => b.name === "ingame-sfx");
 
-    const imagesAliases = ingameBundle.assets.map((assets) => assets.alias);
-    imagesAliases.sort(() => Math.random() - 0.5);
+    const pairedAliases = ingameBundle.assets.map((asset, index) => {
+      return [
+        asset.alias,
+        sfxBundle.assets[index].alias,
+      ];
+    });
+    pairedAliases.sort(() => Math.random() - 0.5);
+
     let cardPairs = [];
     for (let i = 0; i < totalCards / 2; i++) {
-      const color = imagesAliases[i % imagesAliases.length];
-      cardPairs.push(color, color);
+      const images = pairedAliases[i % pairedAliases.length];
+      cardPairs.push(images, images);
     }
 
     // console.log(cardPairs[0])
@@ -52,9 +59,9 @@ export default class Card extends Board {
 
         square.x = offsetX + col * step;
         square.y = offsetY + row * step;
-        square.cardValue = cardPairs[cardIndex];
+        square.cardValue = cardPairs[cardIndex][0];
         square.isFlipped = false;
-
+        square.cardSfx = cardPairs[cardIndex][1]
         square.eventMode = "static";
         square.cursor = "pointer";
         square.on("pointerover", () => (square.tint = 0xdddddd));
@@ -106,30 +113,28 @@ export default class Card extends Board {
     cardClick.isFlipped = true;
     this.activeCards.push(cardClick);
     if (this.activeCards.length === 2) {
-      setTimeout(()=>{
-        this.checkMatch(cardClick);
-      }, 1000)
-    } 
+      this.checkMatch(cardClick);
+    }
   }
 
   checkMatch() {
-    const square1 = this.activeCards[0]
-    const square2 = this.activeCards[1]
-    if (square1.cardValue === square2.cardValue) {
-      
-      this.activeCards.length = 0;
-      console.log("They are Matched!");
-      return
-    } else {
-      this.faceCardDown(square1);
-      this.faceCardDown(square2);
-      square1.isFlipped = false
-      square2.isFlipped = false
-      
-      this.activeCards.length = 0;
-      return
-      // this.faceCardDown(cardPair[1]);
-    }
+    setTimeout(() => {
+      const square1 = this.activeCards[0];
+      const square2 = this.activeCards[1];
+      if (square1.cardValue === square2.cardValue) {
+        this.activeCards.length = 0;
+        console.log("They are Matched!");
+        return;
+      } else {
+        this.faceCardDown(square1);
+        this.faceCardDown(square2);
+        square1.isFlipped = false;
+        square2.isFlipped = false;
+        this.activeCards.length = 0;
+        return;
+        // this.faceCardDown(cardPair[1]);
+      }
+    }, 1000);
   }
   // animateCard(app) {
   //   let time = 0;

@@ -43,7 +43,8 @@ export default {
           { alias: "sadHamsterSfx", src: "/Assets/sfx/sadViolin.mp3" },
           { alias: "tralaleroTralalaSfx", src: "/Assets/sfx/traleroTralala.mp3" },
           { alias: "huhCatSfx", src: "/Assets/sfx/huhCat.mp3" },
-          { alias: "huhCatSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
+          { alias: "StopItSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
+          { alias: "underwaterSfx", src: "/Assets/sfx/underwater.mp3" },
       ]
     }
   ],

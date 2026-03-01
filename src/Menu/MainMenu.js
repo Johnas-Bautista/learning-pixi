@@ -2,9 +2,11 @@ import { Assets, Sprite, textStyleToCSS, Rectangle, Container } from "pixi.js";
 import Signals from "../Signals/GameSignals";
 import GameSelect from "./GameSelect";
 import GameSettings from "./GameSettings";
+import { sound } from '@pixi/sound';
 
 export default class MainMenu {
   constructor(app) {
+    sound.play('mainBgm', { loop: true })
     this.app = app;
     this.menu = Sprite.from("preLoadMainMenu");
     this.menu_btns = new Container();
@@ -43,21 +45,21 @@ export default class MainMenu {
     this.startBtn.on("pointerover", () => (this.startBtn.tint = 0xdddddd));
     this.startBtn.on("pointerout", () => (this.startBtn.tint = 0xffffff));
     this.startBtn.on("pointerdown", () => {
+      sound.play('buttonClicked')
       Signals.startButton.dispatch(console.log("dispatched"));
     });
 
     this.settingsBtn.eventMode = "static";
     this.settingsBtn.cursor = "pointer";
-    this.settingsBtn.on(
-      "pointerover",
-      () => (this.settingsBtn.tint = 0xdddddd),
-    );
+    this.settingsBtn.on("pointerover",() => (this.settingsBtn.tint = 0xdddddd),);
     this.settingsBtn.on("pointerout", () => (this.settingsBtn.tint = 0xffffff));
+    this.settingsBtn.on("pointerdown", () => (sound.play('buttonClicked')));
 
     this.exitBtn.eventMode = "static";
     this.exitBtn.cursor = "pointer";
     this.exitBtn.on("pointerover", () => (this.exitBtn.tint = 0xdddddd));
     this.exitBtn.on("pointerout", () => (this.exitBtn.tint = 0xffffff));
+    this.exitBtn.on("pointerdown", () => (sound.play('buttonClicked')));
   }
 
   clickStartButton() {

@@ -2,6 +2,7 @@ import { Container, Graphics, Sprite} from "pixi.js";
 import MainMenu from "./MainMenu";
 import Signals from "../Signals/GameSignals";
 import Card from "../Card/Card";
+import { sound } from "@pixi/sound";
 
 export default class GameSelect {
     constructor(app, menu){
@@ -57,6 +58,7 @@ export default class GameSelect {
         this.goBack.cursor = 'pointer';
         
         this.goBack.on('pointerdown', ()=>{
+            sound.play('buttonClicked')
             Signals.goBackBtn.dispatch();
         });
     }
