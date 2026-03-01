@@ -34,7 +34,10 @@ export default class GameSelect {
         this.pulsingAnimation(this.option2)
 
         this.option1.on("pointerdown", () =>{
-            Signals.optionBtn.dispatch()
+            Signals.optionBtn.dispatch({ action: '3x4'})
+        })        
+        this.option2.on("pointerdown", () =>{
+            Signals.optionBtn.dispatch({ action: '4x4'})
         })
         
         this.container.addChild(this.goBack, this.option1, this.option2)
@@ -47,9 +50,6 @@ export default class GameSelect {
         this.option1.position.set(screenX - (optionSize / 1.3), screenY + layoutOffsetY);
         this.option2.position.set(screenX + (optionSize / 1.3), screenY + layoutOffsetY);
         
-        
-
-
         this.goBack.anchor.set(0.5, 2.5); 
         this.goBack.scale.set(.5);
         this.goBack.position.set(screenX, screenY + optionSize); 
@@ -90,11 +90,19 @@ export default class GameSelect {
     
     chooseLevel(options){
         console.log("Level Selected")
+        const board = new Container()
+        const outline = new Graphics()
         try {
-            const board = new Container()
-            const outline = new Graphics()
-            new Card(outline, board, this.app, 500, 500)
-            this.app.stage.removeChild(this.container)
+            switch(options.action) {
+                case '3x4':
+                    new Card(outline, board, this.app, 500, 400)
+                    this.app.stage.removeChild(this.container)
+                    break;
+                case '4x4':
+                    new Card(outline, board, this.app, 500, 500)
+                    this.app.stage.removeChild(this.container)
+                    break;
+            }
             console.log("Board successfully created and added to stage!");
         } catch(error){
             console.error("The code crashed while making the board:", error);

@@ -1,9 +1,9 @@
 import Board from "../Board/Board";
 import { Graphics, Texture, Assets } from "pixi.js";
-import { sound } from '@pixi/sound';
-import {bundleAssets} from '../index.js'
-import manifest from '../Manifest/AssetsManifest.js'
-  
+import { sound } from "@pixi/sound";
+import { bundleAssets } from "../index.js";
+import manifest from "../Manifest/AssetsManifest.js";
+
 export default class Card extends Board {
   constructor(outline, board, app, ...dimension) {
     super(outline, board, app, ...dimension);
@@ -17,47 +17,52 @@ export default class Card extends Board {
 
   createCard() {
     const step = this.cardSize + this.padding; // 110px per card
-  
-    const cols = Math.floor(this.width / step);   // how many fit horizontally
-    const rows = Math.floor(this.height / step);   // how many fit vertically
+
+    const cols = Math.floor(this.width / step); // how many fit horizontally
+    const rows = Math.floor(this.height / step); // how many fit vertically
     const totalCards = cols * rows;
-    
-    const ingameBundle = manifest.bundles.find(bundle => bundle.name === "ingame-assets");
 
-    const imagesAliases = ingameBundle.assets.map(assets => assets.alias);
+    const ingameBundle = manifest.bundles.find(
+      (bundle) => bundle.name === "ingame-assets",
+    );
 
+    const imagesAliases = ingameBundle.assets.map((assets) => assets.alias);
+    imagesAliases.sort(() => Math.random() - 0.5);
     let cardPairs = [];
-    for(let i = 0; i < totalCards / 2; i++) {
-      const color = imagesAliases[i % imagesAliases.length]
-      cardPairs.push(color, color)
+    for (let i = 0; i < totalCards / 2; i++) {
+      const color = imagesAliases[i % imagesAliases.length];
+      cardPairs.push(color, color);
     }
-    
+
     // console.log(cardPairs[0])
     cardPairs.sort(() => Math.random() - 0.5);
-
+    console.log(cardPairs);
     // center the grid within the board
-    const offsetX = (this.width - cols * step + this.padding) / 2 + this.cardSize / 2;
-    const offsetY = (this.height - rows * step + this.padding) / 2 + this.cardSize / 2;
+    const offsetX =
+      (this.width - cols * step + this.padding) / 2 + this.cardSize / 2;
+    const offsetY =
+      (this.height - rows * step + this.padding) / 2 + this.cardSize / 2;
 
     let cardIndex = 0;
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        const square = new Graphics()
-        this.faceCardDown(square, this.cardSize)
+        const square = new Graphics();
+        this.faceCardDown(square, this.cardSize);
 
         square.x = offsetX + col * step;
         square.y = offsetY + row * step;
-
         square.cardValue = cardPairs[cardIndex];
         square.isFlipped = false;
 
-        square.eventMode = 'static';
-        square.cursor = 'pointer';
-        square.on('pointerover', () => square.tint = 0xdddddd);
-        square.on('pointerout', () => square.tint = 'white');
-        
-        square.on('pointerdown', () => {this.handleClick(square)});
+        square.eventMode = "static";
+        square.cursor = "pointer";
+        square.on("pointerover", () => (square.tint = 0xdddddd));
+        square.on("pointerout", () => (square.tint = "white"));
+
+        square.on("pointerdown", () => {
+          this.handleClick(square);
+        });
         this.shapes.push(square);
         this.board.addChild(square);
 
@@ -66,23 +71,65 @@ export default class Card extends Board {
     }
   }
 
-  faceCardDown(card){
+  faceCardDown(card) {
     card.clear();
-    card.roundRect(-this.cardSize / 2, -this.cardSize / 2, this.cardSize, this.cardSize)
-          .stroke({width: 4, color: 0x0000ff})
-          .fill({ color: 'white', alpha: 0.5 });
+    card
+      .roundRect(
+        -this.cardSize / 2,
+        -this.cardSize / 2,
+        this.cardSize,
+        this.cardSize,
+      )
+      .stroke({ width: 4, color: 0x0000ff })
+      .fill({ color: "white", alpha: 0.5 });
   }
 
-  faceCardUp(card, color){
-    const texture = Assets.get(color)
-    card.clear()
-    card.roundRect(-this.cardSize / 2, -this.cardSize / 2, this.cardSize, this.cardSize)
-          .stroke({width: 4, color: 0x0000ff})
-          .fill({ texture: texture});
+  faceCardUp(card, color) {
+    card.clear();
+    const texture = Assets.get(color);
+    card
+      .roundRect(
+        -this.cardSize / 2,
+        -this.cardSize / 2,
+        this.cardSize,
+        this.cardSize,
+      )
+      .stroke({ width: 4, color: 0x0000ff })
+      .fill({ texture: texture });
   }
 
-  handleClick(cardClick){
-      this.faceCardUp(cardClick, cardClick.cardValue)
+  handleClick(cardClick) {
+    if (cardClick.isFlipped === true || this.activeCards.length >= 2) {
+      return;
+    }
+    this.faceCardUp(cardClick, cardClick.cardValue);
+    cardClick.isFlipped = true;
+    this.activeCards.push(cardClick);
+    if (this.activeCards.length === 2) {
+      setTimeout(()=>{
+        this.checkMatch(cardClick);
+      }, 1000)
+    } 
+  }
+
+  checkMatch() {
+    const square1 = this.activeCards[0]
+    const square2 = this.activeCards[1]
+    if (square1.cardValue === square2.cardValue) {
+      
+      this.activeCards.length = 0;
+      console.log("They are Matched!");
+      return
+    } else {
+      this.faceCardDown(square1);
+      this.faceCardDown(square2);
+      square1.isFlipped = false
+      square2.isFlipped = false
+      
+      this.activeCards.length = 0;
+      return
+      // this.faceCardDown(cardPair[1]);
+    }
   }
   // animateCard(app) {
   //   let time = 0;

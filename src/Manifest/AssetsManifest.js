@@ -26,11 +26,12 @@ export default {
       assets: [ 
         { alias: "fahMeme", src: "/Assets/Memes/Ash_baby.webp" },
         { alias: "emotionalDamageMeme", src: "/Assets/Memes/emotionalDamage.jpg" },
-        { alias: "homelessMeme", src: "/Assets/Memes/homelessMeme.gif"},
-        { alias: "sadHamsterMeme", src: "/Assets/Memes/sadHamster.gif"},
+        { alias: "homelessMeme", src: "/Assets/Memes/homelessMeme.png"},
+        { alias: "sadHamsterMeme", src: "/Assets/Memes/sadHamster.png"},
         { alias: "traleroTralalaMeme", src: "/Assets/Memes/tralaleroTralala.jpg"},
         { alias: "huhCatMeme", src: "/Assets/Memes/huhCat.png"},
-        { alias: "StopItMeme", src: "/Assets/Memes/stopItGetSomeHelp.gif"},
+        { alias: "StopItMeme", src: "/Assets/Memes/stopItGetSomeHelp.png"},
+        { alias: "underwaterMeme", src: "/Assets/Memes/underWater.png"},
       ]
     },
     {
@@ -42,6 +43,7 @@ export default {
           { alias: "sadHamsterSfx", src: "/Assets/sfx/sadViolin.mp3" },
           { alias: "tralaleroTralalaSfx", src: "/Assets/sfx/traleroTralala.mp3" },
           { alias: "huhCatSfx", src: "/Assets/sfx/huhCat.mp3" },
+          { alias: "huhCatSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
       ]
     }
   ],
