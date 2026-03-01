@@ -5,12 +5,13 @@ export default class Board {
         this.outline = outline
         this.width = dimension[0];
         this.height = dimension[1];
-        this._init(app);
+        this.app = app
+        this._init();
     }
     
-    _init(app){
-        this.scaleBoard(app);
-        app.stage.addChild(this.getBoard());
+    _init(){
+        this.scaleBoard(this.app);
+        this.app.stage.addChild(this.getBoard());
     }
 
     getBoard(){
@@ -20,8 +21,8 @@ export default class Board {
     scaleBoard(app){
         this.board.scale.set(1);
         this.board.position.set(
-            (app.screen.width - this.width) / 2,
-            (app.screen.height - this.height) / 2
+            (this.app.screen.width - this.width) / 2,
+            (this.app.screen.height - this.height) / 2
         );
         // this.outlineBoard()
     }

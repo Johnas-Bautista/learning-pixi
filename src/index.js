@@ -14,9 +14,16 @@ import { initDevtools } from "@pixi/devtools";
 import Signals from "./Signals/GameSignals";
 import NewGame from "./common";
 
-
 const app = new Application();
-
+export const style = new TextStyle({
+  fill: "#ffffff",
+  fontSize: 48,
+  fontWeight: "bold",
+  stroke: "#2c3e50",
+  strokeThickness: 6,
+  dropShadow: true,
+  dropShadowDistance: 4,
+});
 (async () => {
   try {
     const GAME_WIDTH = window.innerWidth;
@@ -52,16 +59,6 @@ const loadingBarMenu = async (app) => {
   const background = Sprite.from("preLoadBackground");
   const emptyBar = Sprite.from("preLoadEmptyBar");
   const filledBar = Sprite.from("preLoadFilledBar");
-
-  const style = new TextStyle({
-    fill: "#ffffff",
-    fontSize: 48,
-    fontWeight: 'bold',
-    stroke: '#2c3e50',
-    strokeThickness: 6,
-    dropShadow: true,
-    dropShadowDistance: 4,
-  });
 
   const loadingText = new Text({ text: "Loading... 0%", style });
   setProperties(app, emptyBar, filledBar, background, loadingText);
@@ -111,10 +108,12 @@ const onProgress = async (app, filledBar, textLoad, emptyBar) => {
   };
 
   app.ticker.add(updateLoadingBar);
-  
-  await Assets.loadBundle(["menu-assets", "ingame-assets", "ingame-sfx"], (progress) => {
-    targetProgress = progress;
-    textLoad.text = `Loading... ${Math.round(progress * 100)}%`;
-  });
 
+  await Assets.loadBundle(
+    ["menu-assets", "ingame-assets", "ingame-sfx"],
+    (progress) => {
+      targetProgress = progress;
+      textLoad.text = `Loading... ${Math.round(progress * 100)}%`;
+    },
+  );
 };

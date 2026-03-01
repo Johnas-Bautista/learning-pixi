@@ -56,7 +56,8 @@ export default class GameSelect {
         this.goBack.position.set(screenX, screenY + optionSize); 
         this.goBack.eventMode = 'static';
         this.goBack.cursor = 'pointer';
-        
+        this.goBack.on("pointerover", () => (this.goBack.tint = 0xdddddd))
+        this.goBack.on("pointerout", () => (this.goBack.tint = 0xffffff))
         this.goBack.on('pointerdown', ()=>{
             sound.play('buttonClicked')
             Signals.goBackBtn.dispatch();
