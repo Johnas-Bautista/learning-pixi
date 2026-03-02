@@ -50,7 +50,8 @@ export default {
       name: "game-over-asset",
       assets: [
         {alias: "gameOver", src: "/Assets/GameOver.png"},
-        {alias: "gameOverSfx", src: "/Assets/GameOver.png"}
+        {alias: "gameOver1Sfx", src: "/Assets/gameOver1.mp3"},
+        {alias: "gameOver2Sfx", src: "/Assets/gameOverFart.mp3"}
       ]
     }
   ],
