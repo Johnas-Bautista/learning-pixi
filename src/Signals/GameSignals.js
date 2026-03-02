@@ -7,5 +7,6 @@ export default {
     exitButton: new signals(),
     retryBtn: new signals(),
     goBackBtn: new signals(),
-    optionBtn: new signals()
+    optionBtn: new signals(),
+    gameOver: new signals()
 }

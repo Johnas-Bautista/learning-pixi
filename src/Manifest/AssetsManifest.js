@@ -46,6 +46,12 @@ export default {
           { alias: "StopItSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
           { alias: "underwaterSfx", src: "/Assets/sfx/underwater.mp3" },
       ]
+    }, {
+      name: "game-over-asset",
+      assets: [
+        {alias: "gameOver", src: "/Assets/GameOver.png"},
+        {alias: "gameOverSfx", src: "/Assets/GameOver.png"}
+      ]
     }
   ],
 };

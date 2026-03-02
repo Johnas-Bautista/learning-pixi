@@ -1,15 +1,13 @@
 import Board from "../Board/Board";
-import { Graphics, Texture, Assets, Text, TextStyle } from "pixi.js";
+import { Graphics, Texture, Assets } from "pixi.js";
 import { sound } from "@pixi/sound";
 import { bundleAssets } from "../index.js";
 import manifest from "../Manifest/AssetsManifest.js";
-import { style } from "../index.js"
+import Signals from "../Signals/GameSignals";
 
 export default class Card extends Board {
-  constructor(outline, board, app, ...dimension) {
-    super(outline, board, app, ...dimension);
-    this.duration = new Text({ text: "0", style});
-    this.totalScore = 0;
+  constructor(outline, board, app, time, ...dimension) {
+    super(outline, board, app, time, ...dimension);
     this.cardSize = 100;
     this.padding = 10;
     this.shapes = [];
@@ -23,8 +21,9 @@ export default class Card extends Board {
 
     const cols = Math.floor(this.width / step); // how many fit horizontally
     const rows = Math.floor(this.height / step); // how many fit vertically
+    // this.timerText.anchor.set(1)
     const totalCards = cols * rows;
-    this.totalScore = totalCards;
+    this.cardTotal = totalCards;
     const ingameBundle = manifest.bundles.find(
       (b) => b.name === "ingame-assets",
     );
@@ -61,6 +60,7 @@ export default class Card extends Board {
         square.y = offsetY + row * step;
         square.cardValue = cardPairs[cardIndex][0];
         square.isFlipped = false;
+        square.isMatched = false;
         square.cardSfx = cardPairs[cardIndex][1];
         square.eventMode = "static";
         square.cursor = "pointer";
@@ -119,17 +119,22 @@ export default class Card extends Board {
 
   checkMatch() {
     setTimeout(() => {
-      var score = 0;
       const square1 = this.activeCards[0];
       const square2 = this.activeCards[1];
+      let isMatched = [];
       if (square1.cardValue === square2.cardValue) {
-        if (score === this.totalScore) {
-          this.createCard();
-          return console.log("You win");
+        square1.isMatched = true;
+        square2.isMatched = true;
+        if (square1.isMatched == true && square2.isMatched == true)
+          isMatched.push(square1, square2);
+
+        if (isMatched.length >= this.cardTotal) {
+          Signals.gameOver.dispatch({result : "win"});
+          return
         }
+
         this.activeCards.length = 0;
         sound.play(square1.cardSfx);
-        score++;
         console.log("They are Matched!");
         return;
       } else {
@@ -139,30 +144,7 @@ export default class Card extends Board {
         square2.isFlipped = false;
         this.activeCards.length = 0;
         return;
-        // this.faceCardDown(cardPair[1]);
       }
     }, 1000);
   }
-
-  gameTimer(ticker) {
-    // Add the time passed since the last tick to the total elapsed time
-    elapsed += ticker.elapsedMS; // Use elapsedMS for raw time in milliseconds
-
-    // Check if the duration has been reached
-    if (elapsed >= duration) {
-      console.log("Timer finished!");
-
-      // Stop the timer by removing the callback from the ticker
-      this.app.ticker.remove(gameTimer);
-    }
-  }
-  // animateCard(app) {
-  //   let time = 0;
-  //   app.ticker.add((ticker) => {
-  //   time += ticker.deltaTime * 0.02;
-  //     for (let i = 0; i < this.shapes.length; i++) {
-  //       this.shapes[i].rotation += .02 * ticker.deltaTime;
-  //     }
-  //   });
-  // }
 }

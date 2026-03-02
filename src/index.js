@@ -110,7 +110,7 @@ const onProgress = async (app, filledBar, textLoad, emptyBar) => {
   app.ticker.add(updateLoadingBar);
 
   await Assets.loadBundle(
-    ["menu-assets", "ingame-assets", "ingame-sfx"],
+    ["menu-assets", "ingame-assets", "ingame-sfx", "game-over-asset"],
     (progress) => {
       targetProgress = progress;
       textLoad.text = `Loading... ${Math.round(progress * 100)}%`;

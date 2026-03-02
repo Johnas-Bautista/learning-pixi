@@ -67,7 +67,6 @@ export default class GameSelect {
     goBackButton(){
         this.app.stage.removeChild(this.container);
         this.app.stage.addChild(this.menu.menu, this.menu.menu_btns);
-        console.log("went back 2");
     }
 
     
@@ -98,11 +97,11 @@ export default class GameSelect {
         try {
             switch(options.action) {
                 case '3x4':
-                    new Card(outline, board, this.app, 500, 400)
+                    new Card(outline, board, this.app, 30, 500, 400)
                     this.app.stage.removeChild(this.container)
                     break;
                 case '4x4':
-                    new Card(outline, board, this.app, 500, 500)
+                    new Card(outline, board, this.app, 30, 500, 500)
                     this.app.stage.removeChild(this.container)
                     break;
             }
