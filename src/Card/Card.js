@@ -1,9 +1,8 @@
 import Board from "../Board/Board";
-import { Graphics, Texture, Assets } from "pixi.js";
+import { Graphics, Assets } from "pixi.js";
 import { sound } from "@pixi/sound";
 import { bundleAssets } from "../index.js";
 import manifest from "../Manifest/AssetsManifest.js";
-import Signals from "../Signals/GameSignals";
 
 export default class Card extends Board {
   constructor(outline, board, app, time, ...dimension) {
@@ -127,6 +126,7 @@ export default class Card extends Board {
         square2.isMatched = true;
         if (square1.isMatched == true && square2.isMatched == true)
           isMatched.push(square1, square2);
+          console.log(isMatched)
 
         if (isMatched.length >= this.cardTotal) {
           Signals.gameOver.dispatch({result : "win"});

@@ -47,11 +47,14 @@ export default {
           { alias: "underwaterSfx", src: "/Assets/sfx/underwater.mp3" },
       ]
     }, {
-      name: "game-over-asset",
+      name: "outcome-asset",
       assets: [
-        {alias: "gameOver", src: "/Assets/GameOver.png"},
-        {alias: "gameOver1Sfx", src: "/Assets/gameOver1.mp3"},
-        {alias: "gameOver2Sfx", src: "/Assets/gameOverFart.mp3"}
+        {alias: "youLose", src: "/Assets/YouLose.png"},
+        {alias: "youWin", src: "/Assets/YouWin1.png"},
+        {alias: "restartGame", src: "/Assets/restart.png"},
+        {alias: "gameOver1Sfx", src: "/Assets/sfx/gameOver1.mp3"},
+        {alias: "gameOver2Sfx", src: "/Assets/sfx/gameOver2.mp3"},
+        {alias: "gameOver3Sfx", src: "/Assets/sfx/gameOverFart.mp3"}
       ]
     }
   ],

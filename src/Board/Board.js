@@ -1,10 +1,14 @@
-import { Text } from "pixi.js";
+import { Graphics, Texture, Assets, Text, Sprite } from "pixi.js";
 import { style } from "../index.js";
+import Signals from "../Signals/GameSignals";
+import { sound } from "@pixi/sound";
+
 export default class Board {
   constructor(outline, board, app, time, ...dimension) {
-    Signals.gameOver.add(this.gameOver, this);
+    Signals.gameOver.add(this.gameState, this);
     this.timerText = new Text({ text: "30", style: style });
-    this.timeLeft = 30000;
+    this.timeLeft = 1000;
+    this.isGameOver = false;
     this.time = time;
     this.board = board;
     this.outline = outline;
@@ -21,6 +25,7 @@ export default class Board {
     this.app.stage.addChild(this.getBoard());
     this.app.stage.addChild(this.timerText);
     this.app.ticker.add((ticker) => this.gameTimer(ticker));
+    
   }
 
   getBoard() {
@@ -44,24 +49,42 @@ export default class Board {
   }
 
   gameTimer(ticker) {
+    if(this.isGameOver) return 
     // Add the time passed since the last tick to the total elapsed time
     this.timeLeft -= ticker.elapsedMS; // Use elapsedMS for raw time in milliseconds
     this.timerText.text = `${Math.ceil(this.timeLeft / 1000)}`;
     // Check if the duration has been reached
     if (this.timeLeft <= 0) {
+      this.isGameOver = true
       this.timerText.text = "0";
       this.app.ticker.remove(this.gameTimer);
-      Signals.gameOver.dispatch({ result: "lose" });
+      Signals.gameOver.dispatch({result: "lose"})
     }
   }
 
-  gameOver(outcome) {
-    const gameOver = Assets.get("gameOver");
-    this.app.stage.removeChild(this.board);
+  gameState(outcome) {
+    const gameOver = new Sprite(Assets.get("youLose"));
+    const retry = new Sprite(Assets.get("restartGame"));
+    this.app.stage.removeChild(this.board, this.timerText);
     switch (outcome.result) {
       case "win":
         break;
       case "lose":
+        sound.stop('mainBgm')
+        gameOver.anchor.set(0.5)
+        gameOver.scale.set(0.7)
+        gameOver.position.set(this.app.screen.width / 2, this.app.screen.height / 2)
+        retry.anchor.set(-5,-1.8)
+        retry.scale.set(0.3)
+        retry.position.set(this.app.screen.width / 2, this.app.screen.height / 2)
+
+        
+        this.app.stage.addChild(gameOver, retry)
+        sound.play('gameOver1Sfx', {
+          complete: () => sound.play('gameOver3Sfx', {
+            complete: () => sound.play('mainBgm')
+          })
+        })
         break;
     }
   }
