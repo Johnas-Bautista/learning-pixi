@@ -18,7 +18,8 @@ export default {
         {alias: "preLoadEmptyBar", src: "/Assets/progressBack.png"},
         {alias: "preLoadBackground", src: "/Assets/background.png"},
         {alias: "mainBgm", src: "/Assets/sfx/thick-of-it.mp3"},
-        {alias: "buttonClicked", src: "/Assets/sfx/buttonClick.mp3"}
+        {alias: "buttonClicked", src: "/Assets/sfx/buttonClick.mp3"},
+        {alias: "flipCard", src: "/Assets/sfx/flipCard.mp3"}
       ]
     },
     {

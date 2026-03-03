@@ -13,9 +13,14 @@ export default class MainMenu {
     this.startBtn = " ";
     this.settingsBtn = " ";
     this.exitBtn = " ";
+    Signals.startButton.removeAll();
+    Signals.settingsButton.removeAll();
+    Signals.exitButton.removeAll();
+    Signals.retryBtn.removeAll();
     Signals.startButton.add(this.clickStartButton, this);
     Signals.settingsButton.add(this.clickSettingsButton, this);
-    Signals.exitButton.add(this.clickExitButton, this);
+    Signals.exitButton.add(this.clickExitButton, this);    
+    Signals.retryBtn.add(this.clickStartButton, this)
     this.init();
   }
 

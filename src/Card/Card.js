@@ -91,6 +91,7 @@ export default class Card extends Board {
   }
 
   faceCardUp(card, color) {
+    sound.play("flipCard")
     card.clear();
     const texture = Assets.get(color);
     card
