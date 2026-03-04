@@ -6,7 +6,7 @@ import { sound } from '@pixi/sound';
 
 export default class MainMenu {
   constructor(app) {
-    sound.play('mainBgm', { loop: true })
+    // sound.play('mainBgm', { loop: true })
     this.app = app;
     this.menu = Sprite.from("preLoadMainMenu");
     this.menu_btns = new Container();

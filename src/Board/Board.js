@@ -5,9 +5,9 @@ import { sound } from "@pixi/sound";
 
 export default class Board {
   constructor(outline, board, app, time, ...dimension) {
-    Signals.gameOver.removeAll()
+    Signals.gameOver.removeAll();
     this.timerText = new Text({ text: "30", style: style });
-    this.timeLeft = 3000;
+    this.timeLeft = 300000; // milliseconds
     this.isGameOver = false;
     this.time = time;
     this.board = board;
@@ -47,7 +47,7 @@ export default class Board {
       .stroke({ width: 2, color: "#00000061" });
     this.board.addChild(this.outline);
   }
-  tickerCallback = (ticker) => this.gameTimer(ticker)
+  tickerCallback = (ticker) => this.gameTimer(ticker);
   gameTimer(ticker) {
     if (this.isGameOver) return;
     // Add the time passed since the last tick to the total elapsed time
@@ -78,45 +78,58 @@ export default class Board {
   }
 
   loseGameDoThis(lose, retryButton) {
-    sound.stop("mainBgm");
-    lose.anchor.set(0.5);
-    lose.scale.set(0.7);
-    lose.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
+    lose.State = false
+    this.showOutcomeState(lose, retryButton)
+  }
+  winGameDoThis(win, retryButton) {
+    win.State = true
+    this.showOutcomeState(win, retryButton)
+  }
+
+  showOutcomeState(outcome, retryButton) {
+    // sound.stop("mainBgm");
+    outcome.anchor.set(0.5);
+    outcome.scale.set(0.7);
+    outcome.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
+
     retryButton.anchor.set(1, 1);
     retryButton.scale.set(0.3);
     retryButton.position.set(
       this.app.screen.width - 20,
       this.app.screen.height - 20,
     );
-
-    this.app.stage.addChild(lose, retryButton);
-    this.animatePopUp(lose, 0.7);
+    
+    this.animatePopUp(outcome, 0.7);
     this.animatePopUp(retryButton, 0.3);
+    this.app.stage.addChild(outcome, retryButton);
 
-    sound.play("gameOver1Sfx", {
-      complete: () => sound.play("gameOver3Sfx", {
-        complete: () => {
-          retryButton.eventMode = 'static'
-          retryButton.cursor = 'pointer'
-          retryButton.on('pointerover', () => { retryButton.tint = 0xdddddd})
-          retryButton.on('pointerout', () => { retryButton.tint = 0xffffff})
-          retryButton.on('pointerdown', () => {
-            this.app.stage.removeChild(lose, retryButton)
-            sound.play('mainBgm', { loop: true })
-            Signals.retryBtn.dispatch()
-          })
-        }
-      }),
+    sound.play(outcome.State ? " ":"gameOver1Sfx", {
+      complete: () =>
+        sound.play("gameOver3Sfx", {
+          complete: () => {
+            retryButton.eventMode = "static";
+            retryButton.cursor = "pointer";
+            retryButton.on("pointerover", () => {
+              retryButton.tint = 0xdddddd;
+            });
+            retryButton.on("pointerout", () => {
+              retryButton.tint = 0xffffff;
+            });
+            retryButton.on("pointerdown", () => {
+              this.app.stage.removeChild(outcome, retryButton);
+              // sound.play('mainBgm', { loop: true })
+              Signals.retryBtn.dispatch();
+            });
+          },
+        }),
     });
   }
-  winGameDoThis() {}
-
   animatePopUp(sprite, targetScale) {
     sprite.scale.set(0);
 
     let isGrowing = true;
-    const growSpeed = 0.05;   
-    const bounceScale = targetScale + 0.15; 
+    const growSpeed = 0.05;
+    const bounceScale = targetScale + 0.15;
 
     const animate = () => {
       if (isGrowing) {
@@ -130,7 +143,7 @@ export default class Board {
         sprite.scale.y -= growSpeed * 0.5;
         if (sprite.scale.x <= targetScale) {
           sprite.scale.set(targetScale);
-          this.app.ticker.remove(animate); 
+          this.app.ticker.remove(animate);
         }
       }
     };
