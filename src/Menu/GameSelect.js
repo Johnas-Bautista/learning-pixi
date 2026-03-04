@@ -6,10 +6,11 @@ import { sound } from "@pixi/sound";
 
 export default class GameSelect {
     constructor(app, menu){
+        Signals.optionBtn.removeAll()
+        Signals.optionBtn.add(this.chooseLevel, this)
         this.app = app;
         this.menu = menu
         this.goBack = Sprite.from('preLoadGoBackButton')
-        Signals.optionBtn.add(this.chooseLevel, this)
         this.option1 = new Graphics()
         this.option2 = new Graphics()
         this.container = new Container()

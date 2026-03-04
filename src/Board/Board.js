@@ -5,6 +5,7 @@ import { sound } from "@pixi/sound";
 
 export default class Board {
   constructor(outline, board, app, time, ...dimension) {
+    Signals.gameOver.removeAll()
     this.timerText = new Text({ text: "30", style: style });
     this.timeLeft = 3000;
     this.isGameOver = false;
@@ -24,7 +25,7 @@ export default class Board {
     this.scaleBoard(this.app);
     this.app.stage.addChild(this.getBoard());
     this.app.stage.addChild(this.timerText);
-    this.app.ticker.add((ticker) => this.gameTimer(ticker));
+    this.app.ticker.add(this.tickerCallback);
   }
 
   getBoard() {
@@ -46,7 +47,7 @@ export default class Board {
       .stroke({ width: 2, color: "#00000061" });
     this.board.addChild(this.outline);
   }
-
+  tickerCallback = (ticker) => this.gameTimer(ticker)
   gameTimer(ticker) {
     if (this.isGameOver) return;
     // Add the time passed since the last tick to the total elapsed time
@@ -56,7 +57,7 @@ export default class Board {
     if (this.timeLeft <= 0) {
       this.isGameOver = true;
       this.timerText.text = "0";
-      this.app.ticker.remove(this.gameTimer);
+      this.app.ticker.remove(this.tickerCallback);
       Signals.gameOver.dispatch({ result: "lose" });
     }
   }
@@ -99,7 +100,7 @@ export default class Board {
           retryButton.cursor = 'pointer'
           retryButton.on('pointerover', () => { retryButton.tint = 0xdddddd})
           retryButton.on('pointerout', () => { retryButton.tint = 0xffffff})
-          retryButton.once('pointerdown', () => {
+          retryButton.on('pointerdown', () => {
             this.app.stage.removeChild(lose, retryButton)
             sound.play('mainBgm', { loop: true })
             Signals.retryBtn.dispatch()
