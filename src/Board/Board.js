@@ -7,6 +7,7 @@ export default class Board {
   constructor(outline, board, app, time, ...dimension) {
     Signals.gameOver.removeAll();
     this.timerText = new Text({ text: "30", style: style });
+    this.isPlayingSound = false;
     this.timeLeft = 300000; // milliseconds
     this.isGameOver = false;
     this.time = time;
@@ -48,8 +49,10 @@ export default class Board {
     this.board.addChild(this.outline);
   }
   tickerCallback = (ticker) => this.gameTimer(ticker);
+
+  // Game Timer
   gameTimer(ticker) {
-    if (this.isGameOver) return;
+    if (this.isGameOver || this.isPlayingSound) return;
     // Add the time passed since the last tick to the total elapsed time
     this.timeLeft -= ticker.elapsedMS; // Use elapsedMS for raw time in milliseconds
     this.timerText.text = `${Math.ceil(this.timeLeft / 1000)}`;
@@ -62,6 +65,7 @@ export default class Board {
     }
   }
 
+  // Game Outcomes
   gameState(outcome) {
     const loseGame = new Sprite(Assets.get("youLose"));
     const winGame = new Sprite(Assets.get("youWin"));

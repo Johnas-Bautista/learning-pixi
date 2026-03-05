@@ -107,7 +107,7 @@ export default class Card extends Board {
   }
 
   handleClick(cardClick) {
-    if (cardClick.isFlipped === true || this.activeCards.length >= 2) {
+    if (cardClick.isFlipped === true || this.activeCards.length >= 2 || this.isPlayingSound === true) {
       return;
     }
     this.faceCardUp(cardClick, cardClick.cardValue);
@@ -118,7 +118,7 @@ export default class Card extends Board {
     }
   }
 
-  checkMatch() {
+  checkMatch(cardClick) {
     setTimeout(() => {
       const square1 = this.activeCards[0];
       const square2 = this.activeCards[1];
@@ -134,8 +134,13 @@ export default class Card extends Board {
           return
         }
 
-        this.activeCards.length = 0;
-        sound.play(square1.cardSfx);
+        this.activeCards.length = 0;  // Set the activeCards array into empty array
+        this.isPlayingSound = true  // set to True
+        sound.play(square1.cardSfx, {
+          complete: () => {
+            this.isPlayingSound = false 
+          }
+        }); // play sound
         console.log("They are Matched!");
         return;
       } else {
