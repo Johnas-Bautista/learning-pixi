@@ -26,7 +26,7 @@ export default class Board {
     this.scaleBoard(this.app);
     this.app.stage.addChild(this.getBoard());
     this.app.stage.addChild(this.timerText);
-    this.app.ticker.add(this.tickerCallback);
+    this.app.ticker.add(this.gameTimer);
   }
 
   getBoard() {
@@ -48,10 +48,11 @@ export default class Board {
       .stroke({ width: 2, color: "#00000061" });
     this.board.addChild(this.outline);
   }
-  tickerCallback = (ticker) => this.gameTimer(ticker);
+
+  // tickerCallback = (ticker) => this.gameTimer(ticker);
 
   // Game Timer
-  gameTimer(ticker) {
+  gameTimer = (ticker) => {
     if (this.isGameOver || this.isPlayingSound) return;
     // Add the time passed since the last tick to the total elapsed time
     this.timeLeft -= ticker.elapsedMS; // Use elapsedMS for raw time in milliseconds
@@ -60,7 +61,7 @@ export default class Board {
     if (this.timeLeft <= 0) {
       this.isGameOver = true;
       this.timerText.text = "0";
-      this.app.ticker.remove(this.tickerCallback);
+      this.app.ticker.remove(this.gameTimer);
       Signals.gameOver.dispatch({ result: "lose" });
     }
   }

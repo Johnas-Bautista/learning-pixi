@@ -2,7 +2,7 @@ import { Assets, Sprite, textStyleToCSS, Rectangle, Container } from "pixi.js";
 import Signals from "../Signals/GameSignals";
 import GameSelect from "./GameSelect";
 import GameSettings from "./GameSettings";
-import { sound } from '@pixi/sound';
+import { sound } from "@pixi/sound";
 
 export default class MainMenu {
   constructor(app) {
@@ -19,8 +19,8 @@ export default class MainMenu {
     Signals.retryBtn.removeAll();
     Signals.startButton.add(this.clickStartButton, this);
     Signals.settingsButton.add(this.clickSettingsButton, this);
-    Signals.exitButton.add(this.clickExitButton, this);    
-    Signals.retryBtn.add(this.clickStartButton, this)
+    Signals.exitButton.add(this.clickExitButton, this);
+    Signals.retryBtn.add(this.clickStartButton, this);
     this.init();
   }
 
@@ -50,35 +50,43 @@ export default class MainMenu {
     this.startBtn.on("pointerover", () => (this.startBtn.tint = 0xdddddd));
     this.startBtn.on("pointerout", () => (this.startBtn.tint = 0xffffff));
     this.startBtn.on("pointerdown", () => {
-      sound.play('buttonClicked')
+      sound.play("buttonClicked");
       Signals.startButton.dispatch(console.log("dispatched"));
     });
 
     this.settingsBtn.eventMode = "static";
     this.settingsBtn.cursor = "pointer";
-    this.settingsBtn.on("pointerover",() => (this.settingsBtn.tint = 0xdddddd),);
+    this.settingsBtn.on(
+      "pointerover",
+      () => (this.settingsBtn.tint = 0xdddddd),
+    );
     this.settingsBtn.on("pointerout", () => (this.settingsBtn.tint = 0xffffff));
-    this.settingsBtn.on("pointerdown", () => (sound.play('buttonClicked')));
+    this.settingsBtn.on("pointerdown", () => {
+      sound.play("buttonClicked");
+      Signals.settingsButton.dispatch(console.log("dispatched"));
+    });
 
     this.exitBtn.eventMode = "static";
     this.exitBtn.cursor = "pointer";
     this.exitBtn.on("pointerover", () => (this.exitBtn.tint = 0xdddddd));
     this.exitBtn.on("pointerout", () => (this.exitBtn.tint = 0xffffff));
-    this.exitBtn.on("pointerdown", () => (sound.play('buttonClicked')));
+    this.exitBtn.on("pointerdown", () => {
+      sound.play("buttonClicked");
+    });
   }
 
   clickStartButton() {
     const select = new GameSelect(this.app, this);
-    // Fix 1: Remove them from the stage instead of destroying them
+
     this.app.stage.removeChild(this.menu, this.menu_btns);
-    
-    // Fix 2: Prevent a memory leak by clearing old listeners before adding a new one
+
     Signals.goBackBtn.removeAll();
     Signals.goBackBtn.add(() => select.goBackButton());
   }
 
   clickSettingsButton() {
-    const settings = new GameSettings()
+    const settings = new GameSettings();
+    this.app.stage.removeChild(this.menu, this.menu_btns);
     Signals.goBackBtn.removeAll();
     Signals.goBackBtn.add(() => settings.goBackButton());
   }
