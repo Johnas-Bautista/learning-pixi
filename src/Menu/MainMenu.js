@@ -6,7 +6,7 @@ import { sound } from "@pixi/sound";
 
 export default class MainMenu {
   constructor(app) {
-    // sound.play('mainBgm', { loop: true })
+    sound.play('mainBgm', { loop: true })
     this.app = app;
     this.menu = Sprite.from("preLoadMainMenu");
     this.menu_btns = new Container();
@@ -77,15 +77,13 @@ export default class MainMenu {
 
   clickStartButton() {
     const select = new GameSelect(this.app, this);
-
     this.app.stage.removeChild(this.menu, this.menu_btns);
-
     Signals.goBackBtn.removeAll();
     Signals.goBackBtn.add(() => select.goBackButton());
   }
 
   clickSettingsButton() {
-    const settings = new GameSettings();
+    const settings = new GameSettings(this.app, this);
     this.app.stage.removeChild(this.menu, this.menu_btns);
     Signals.goBackBtn.removeAll();
     Signals.goBackBtn.add(() => settings.goBackButton());

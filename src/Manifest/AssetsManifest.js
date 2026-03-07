@@ -8,7 +8,8 @@ export default {
         { alias: "preLoadSettingsButton", src: "/Assets/settingsBtn.png" },
         { alias: "preLoadExitButton", src: "/Assets/exitBtn.png" },
         { alias: "preLoadGoBackButton", src: "/Assets/back.png" },
-        { alias: "preLoadMainMenu", src: "/Assets/main.png" }
+        { alias: "preLoadMainMenu", src: "/Assets/main.png" },
+        { alias: "sliderButton", src: "/Assets/sliderButton.png" },
       ],
     },
     {
