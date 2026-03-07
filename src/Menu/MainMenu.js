@@ -6,7 +6,7 @@ import { sound } from "@pixi/sound";
 
 export default class MainMenu {
   constructor(app) {
-    sound.play('mainBgm', { loop: true })
+    sound.play("mainBgm", { loop: true });
     this.app = app;
     this.menu = Sprite.from("preLoadMainMenu");
     this.menu_btns = new Container();
@@ -72,6 +72,7 @@ export default class MainMenu {
     this.exitBtn.on("pointerout", () => (this.exitBtn.tint = 0xffffff));
     this.exitBtn.on("pointerdown", () => {
       sound.play("buttonClicked");
+      Signals.exitButton.dispatch();
     });
   }
 
@@ -89,5 +90,17 @@ export default class MainMenu {
     Signals.goBackBtn.add(() => settings.goBackButton());
   }
 
-  clickExitButton() {}
+  clickExitButton() {
+    setTimeout(() => {
+      sound.close(); 
+      this.app.ticker.stop();
+      this.app.destroy(true, {
+        children: true,
+        texture: true,
+        baseTexture: true,
+      });
+      this.app = null;
+      window.location.reload();
+    }, 0);
+  }
 }
