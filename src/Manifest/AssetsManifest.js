@@ -53,6 +53,8 @@ export default {
       assets: [
         {alias: "youLose", src: "/Assets/YouLose.png"},
         {alias: "youWin", src: "/Assets/YouWin1.png"},
+        {alias: "youWin1Sfx", src: "/Assets/sfx/youwinSound.mp3"},
+        {alias: "youWin2Sfx", src: "/Assets/sfx/youwinSfx.mp3"},
         {alias: "restartGame", src: "/Assets/restart.png"},
         {alias: "gameOver1Sfx", src: "/Assets/sfx/gameOver1.mp3"},
         {alias: "gameOver2Sfx", src: "/Assets/sfx/gameOver2.mp3"},

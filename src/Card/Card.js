@@ -7,6 +7,7 @@ import Signals from  "../Signals/GameSignals.js"
 export default class Card extends Board {
   constructor(outline, board, app, time, ...dimension) {
     super(outline, board, app, time, ...dimension);
+    this.bgMusic = sound.find('mainBgm');
     this.cardSize = 100;
     this.padding = 10;
     this.cardTotal = 0
@@ -22,7 +23,7 @@ export default class Card extends Board {
 
     const cols = Math.floor(this.width / step); // how many fit horizontally
     const rows = Math.floor(this.height / step); // how many fit vertically
-    // this.timerText.anchor.set(1)
+    this.timerText.anchor.set(1)
     this.cardTotal = cols * rows;
     const ingameBundle = manifest.bundles.find(
       (b) => b.name === "ingame-assets",
@@ -125,20 +126,21 @@ export default class Card extends Board {
       if (square1.cardValue === square2.cardValue) {
         square1.isMatched = true;
         square2.isMatched = true;
-        if (square1.isMatched == true && square2.isMatched == true)
-          this.isMatched.push(square1, square2);
-          console.log(this.isMatched)
-          console.log(this.isMatched.length, this.cardTotal)
-        if (this.isMatched.length >= this.cardTotal) {
-          Signals.gameOver.dispatch({result : "win"});
-          return
-        }
-
         this.activeCards.length = 0;  // Set the activeCards array into empty array
         this.isPlayingSound = true  // set to True
+        this.bgMusic.pause()
         sound.play(square1.cardSfx, {
           complete: () => {
             this.isPlayingSound = false 
+            this.bgMusic.resume()
+            if (square1.isMatched == true && square2.isMatched == true)
+              this.isMatched.push(square1, square2);
+              console.log(this.isMatched)
+              console.log(this.isMatched.length, this.cardTotal)
+            if (this.isMatched.length >= this.cardTotal) {
+              Signals.gameOver.dispatch({result : "win"});
+              return
+            }
           }
         }); // play sound
         console.log("They are Matched!");

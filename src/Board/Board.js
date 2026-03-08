@@ -92,7 +92,7 @@ export default class Board {
   }
 
   showOutcomeState(outcome, retryButton) {
-    // sound.stop("mainBgm");
+    sound.stop("mainBgm");
     outcome.anchor.set(0.5);
     outcome.scale.set(0.7);
     outcome.position.set(this.app.screen.width / 2, this.app.screen.height / 2);
@@ -107,10 +107,10 @@ export default class Board {
     this.animatePopUp(outcome, 0.7);
     this.animatePopUp(retryButton, 0.3);
     this.app.stage.addChild(outcome, retryButton);
-
-    sound.play(outcome.State ? " ":"gameOver1Sfx", {
+    this.app.ticker.remove(this.gameTimer);
+    sound.play(outcome.State ? "youWin1Sfx":"gameOver1Sfx", {
       complete: () =>
-        sound.play("gameOver3Sfx", {
+        sound.play(outcome.State ? "youWin2Sfx" : "gameOver3Sfx", {
           complete: () => {
             retryButton.eventMode = "static";
             retryButton.cursor = "pointer";
@@ -122,7 +122,7 @@ export default class Board {
             });
             retryButton.on("pointerdown", () => {
               this.app.stage.removeChild(outcome, retryButton);
-              // sound.play('mainBgm', { loop: true })
+              sound.play('mainBgm', { loop: true })
               Signals.retryBtn.dispatch();
             });
           },
