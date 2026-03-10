@@ -8,7 +8,7 @@ export default class Board {
     Signals.gameOver.removeAll();
     this.timerText = new Text({ text: "30", style: style });
     this.isPlayingSound = false;
-    this.timeLeft = 300000; // milliseconds
+    this.timeLeft = 45000; // milliseconds
     this.isGameOver = false;
     this.time = time;
     this.board = board;

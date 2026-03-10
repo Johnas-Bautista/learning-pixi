@@ -21,8 +21,10 @@ export default class GameSelect {
     _init(){
         console.log("Game Select")
         const optionSize = 300
+        const spacing = optionSize / 1.1;
         const screenX = this.app.screen.width / 2;
         const screenY = this.app.screen.height / 2;
+        const marginBetweenButton = screenY - spacing / 3
 
         // 1. DRAW CENTERED: We draw the box perfectly around 0,0 
         // (-150, -150, 300, 300)
@@ -30,12 +32,16 @@ export default class GameSelect {
         // this.option2.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
         
         
+        this.option1.anchor.set(0.5);
+        this.option2.anchor.set(0.5);
+        this.option3.anchor.set(0.5);
+
         this.option1.eventMode = this.option2.eventMode = this.option3.eventMode = 'static'
         this.option1.cursor = this.option2.cursor = this.option3.cursor = 'pointer'
 
-        this.option1.scale.set(0.5);
-        this.option2.scale.set(0.5);
-        this.option3.scale.set(0.5);
+        this.option1.scale.set(0.3);
+        this.option2.scale.set(0.3);
+        this.option3.scale.set(0.3);
         
         this.pulsingAnimation(this.option1)
         this.pulsingAnimation(this.option2)
@@ -54,12 +60,10 @@ export default class GameSelect {
         this.container.addChild(this.goBack, this.option1, this.option2, this.option3)
         this.app.stage.addChild(this.container)
         
-        // 2. POSITION OFFSETS: Now we apply your original layout math directly to the positions!
-        // We take the center of the screen, and add/subtract the layout offsets.
-        const layoutOffsetY = -optionSize / 1.3 + (optionSize / 2); // Your original Y offset adjusted for the new center
-
-        this.option1.position.set(screenX - (optionSize / 1.3), screenY + layoutOffsetY);
-        this.option2.position.set(screenX + (optionSize / 1.3), screenY + layoutOffsetY);
+        // Position options symmetrically: evenly spaced in a row
+        this.option1.position.set(screenX - spacing, marginBetweenButton);
+        this.option2.position.set(screenX, marginBetweenButton);
+        this.option3.position.set(screenX + spacing, marginBetweenButton);
         
         this.goBack.anchor.set(0.5, 2.5); 
         this.goBack.scale.set(.5);
@@ -86,7 +90,7 @@ export default class GameSelect {
             elapsed += ticker.deltaTime;
             // Math.sin creates a smooth wave between -1 and 1
             // We scale it down so the text only grows by 10% (1.0 to 1.1)
-            const scale = 1 + Math.sin(elapsed * 0.1) * 0.05;
+            const scale = 0.3 + Math.sin(elapsed * 0.1) * 0.01;
             options.scale.set(scale);
         }
 
@@ -95,7 +99,7 @@ export default class GameSelect {
         });
         options.on("pointerout", ()=>{
             this.app.ticker.remove(pulseTicker)
-            options.scale.set(0.5)
+            options.scale.set(0.3)
             elapsed = 0;
         });
     }
