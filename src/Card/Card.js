@@ -23,7 +23,6 @@ export default class Card extends Board {
 
     const cols = Math.floor(this.width / step); // how many fit horizontally
     const rows = Math.floor(this.height / step); // how many fit vertically
-    this.timerText.anchor.set(1)
     this.cardTotal = cols * rows;
     const ingameBundle = manifest.bundles.find(
       (b) => b.name === "ingame-assets",

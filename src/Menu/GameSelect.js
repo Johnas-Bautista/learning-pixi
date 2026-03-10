@@ -11,8 +11,9 @@ export default class GameSelect {
         this.app = app;
         this.menu = menu
         this.goBack = Sprite.from('preLoadGoBackButton')
-        this.option1 = new Graphics()
-        this.option2 = new Graphics()
+        this.option1 = Sprite.from('select3x4')
+        this.option2 = Sprite.from('select4x4')
+        this.option3 = Sprite.from('select4x5')
         this.container = new Container()
         this._init();
     }
@@ -25,24 +26,32 @@ export default class GameSelect {
 
         // 1. DRAW CENTERED: We draw the box perfectly around 0,0 
         // (-150, -150, 300, 300)
-        this.option1.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
-        this.option2.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
+        // this.option1.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
+        // this.option2.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
         
         
-        this.option1.eventMode = this.option2.eventMode = 'static'
-        this.option1.cursor = this.option2.cursor = 'pointer'
+        this.option1.eventMode = this.option2.eventMode = this.option3.eventMode = 'static'
+        this.option1.cursor = this.option2.cursor = this.option3.cursor = 'pointer'
+
+        this.option1.scale.set(0.5);
+        this.option2.scale.set(0.5);
+        this.option3.scale.set(0.5);
         
         this.pulsingAnimation(this.option1)
         this.pulsingAnimation(this.option2)
+        this.pulsingAnimation(this.option3)
 
         this.option1.on("pointerdown", () =>{
             Signals.optionBtn.dispatch({ action: '3x4'})
         })        
         this.option2.on("pointerdown", () =>{
             Signals.optionBtn.dispatch({ action: '4x4'})
+        })        
+        this.option3.on("pointerdown", () =>{
+            Signals.optionBtn.dispatch({ action: '4x5'})
         })
         
-        this.container.addChild(this.goBack, this.option1, this.option2)
+        this.container.addChild(this.goBack, this.option1, this.option2, this.option3)
         this.app.stage.addChild(this.container)
         
         // 2. POSITION OFFSETS: Now we apply your original layout math directly to the positions!
@@ -86,7 +95,7 @@ export default class GameSelect {
         });
         options.on("pointerout", ()=>{
             this.app.ticker.remove(pulseTicker)
-            options.scale.set(1)
+            options.scale.set(0.5)
             elapsed = 0;
         });
     }
@@ -103,6 +112,10 @@ export default class GameSelect {
                     break;
                 case '4x4':
                     new Card(outline, board, this.app, 30, 500, 500)
+                    this.app.stage.removeChild(this.container)
+                    break;
+                case '4x5':
+                    new Card(outline, board, this.app, 30, 500, 600)
                     this.app.stage.removeChild(this.container)
                     break;
             }

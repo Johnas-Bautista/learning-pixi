@@ -10,6 +10,9 @@ export default {
         { alias: "preLoadGoBackButton", src: "/Assets/back.png" },
         { alias: "preLoadMainMenu", src: "/Assets/main.png" },
         { alias: "sliderButton", src: "/Assets/sliderButton.png" },
+        { alias: "select3x4", src: "/Assets/3x4.png" },
+        { alias: "select4x4", src: "/Assets/4x4.png" },
+        { alias: "select4x5", src: "/Assets/4x5.png" },
       ],
     },
     {
