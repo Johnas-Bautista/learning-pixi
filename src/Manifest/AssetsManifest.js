@@ -37,6 +37,9 @@ export default {
         { alias: "huhCatMeme", src: "/Assets/Memes/huhCat.png"},
         { alias: "StopItMeme", src: "/Assets/Memes/stopItGetSomeHelp.png"},
         { alias: "underwaterMeme", src: "/Assets/Memes/underWater.png"},
+        { alias: "whatDaHell", src: "/Assets/Memes/wutdahell.webp"},
+        { alias: "gay", src: "/Assets/Memes/gay.jpg"},
+        { alias: "superidol", src: "/Assets/Memes/superidol.jpg"},
       ]
     },
     {
@@ -44,12 +47,14 @@ export default {
       assets: [
           { alias: "fahSfx", src: "/Assets/sfx/fah.mp3" },
           { alias: "emotionalDamageSfx", src: "/Assets/sfx/emotionalDamage.mp3" },
-          { alias: "homelessSfx", src: "/Assets/sfx/homeLess.mp3" },
+          { alias: "homelessSfx", src: "/Assets/sfx/homeless.mp3" },
           { alias: "sadHamsterSfx", src: "/Assets/sfx/sadViolin.mp3" },
           { alias: "tralaleroTralalaSfx", src: "/Assets/sfx/traleroTralala.mp3" },
           { alias: "huhCatSfx", src: "/Assets/sfx/huhCat.mp3" },
           { alias: "StopItSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
           { alias: "underwaterSfx", src: "/Assets/sfx/underwater.mp3" },
+          { alias: "gaySfx", src: "/Assets/sfx/gey.mp3" },
+          { alias: "superidolSfx", src: "/Assets/sfx/superidol.mp3" },
       ]
     }, {
       name: "outcome-asset",
