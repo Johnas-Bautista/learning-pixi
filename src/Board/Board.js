@@ -4,11 +4,11 @@ import Signals from "../Signals/GameSignals";
 import { sound } from "@pixi/sound";
 
 export default class Board {
-  constructor(outline, board, app, time, ...dimension) {
+  constructor(outline, board, app, time, timer = 45, ...dimension) {
     Signals.gameOver.removeAll();
     this.timerText = new Text({ text: "30", style: style });
     this.isPlayingSound = false;
-    this.timeLeft = 45000; // milliseconds
+    this.timeLeft =  timer * 1000 // milliseconds
     this.isGameOver = false;
     this.time = time;
     this.board = board;

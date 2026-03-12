@@ -105,15 +105,15 @@ export default class GameSelect {
         try {
             switch(options.action) {
                 case '3x4':
-                    new Card(outline, board, this.app, 30, 500, 400)
+                    new Card(outline, board, this.app, 30, undefined, 500, 400)
                     this.app.stage.removeChild(this.container)
                     break;
                 case '4x4':
-                    new Card(outline, board, this.app, 30, 500, 500)
+                    new Card(outline, board, this.app, 30, undefined, 500, 500)
                     this.app.stage.removeChild(this.container)
                     break;
                 case '4x5':
-                    new Card(outline, board, this.app, 30, 500, 600)
+                    new Card(outline, board, this.app, 30, 60, 500, 600)
                     this.app.stage.removeChild(this.container)
                     break;
             }
