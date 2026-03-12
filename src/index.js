@@ -12,7 +12,7 @@ import MainMenu from "./Menu/MainMenu";
 import Manifest from "./Manifest/AssetsManifest";
 import { initDevtools } from "@pixi/devtools";
 import Signals from "./Signals/GameSignals";
-import NewGame from "./common";
+import NewGame from "./Common";
 
 const app = new Application();
 export const style = new TextStyle({
