@@ -25,12 +25,6 @@ export default class GameSelect {
         const screenX = this.app.screen.width / 2;
         const screenY = this.app.screen.height / 2;
         const marginBetweenButton = screenY - spacing / 3
-
-        // 1. DRAW CENTERED: We draw the box perfectly around 0,0 
-        // (-150, -150, 300, 300)
-        // this.option1.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
-        // this.option2.roundRect(-optionSize / 2, -optionSize / 2, optionSize, optionSize, 15).fill({ color: 'white', alpha: 0.5 });
-        
         
         this.option1.anchor.set(0.5);
         this.option2.anchor.set(0.5);

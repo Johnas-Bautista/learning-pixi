@@ -53,6 +53,7 @@ export default {
           { alias: "huhCatSfx", src: "/Assets/sfx/huhCat.mp3" },
           { alias: "StopItSfx", src: "/Assets/sfx/stopItGetSomeHelp.mp3" },
           { alias: "underwaterSfx", src: "/Assets/sfx/underwater.mp3" },
+          { alias: "whatDaHellSfx", src: "/Assets/sfx/wutdahel.mp3" },
           { alias: "gaySfx", src: "/Assets/sfx/gey.mp3" },
           { alias: "superidolSfx", src: "/Assets/sfx/superidol.mp3" },
       ]
