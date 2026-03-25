@@ -40,6 +40,9 @@ export default {
         { alias: "whatDaHell", src: "/Assets/Memes/wutdahell.webp"},
         { alias: "gay", src: "/Assets/Memes/gay.jpg"},
         { alias: "superidol", src: "/Assets/Memes/superidol.jpg"},
+        { alias: "snoreMeme", src: "/Assets/Memes/snore.jfif"},
+        { alias: "yoMeme", src: "/Assets/Memes/yoMeme.jfif"},
+        { alias: "67Meme", src: "/Assets/Memes/67meme.png"},
       ]
     },
     {
@@ -56,6 +59,9 @@ export default {
           { alias: "whatDaHellSfx", src: "/Assets/sfx/wutdahel.mp3" },
           { alias: "gaySfx", src: "/Assets/sfx/gey.mp3" },
           { alias: "superidolSfx", src: "/Assets/sfx/superidol.mp3" },
+          { alias: "snoreSfx", src: "/Assets/sfx/snore.mp3" },
+          { alias: "yoSfx", src: "/Assets/sfx/yoSfx.mp3" },
+          { alias: "67Sfx", src: "/Assets/sfx/67sfx.mp3" },
       ]
     }, {
       name: "outcome-asset",
